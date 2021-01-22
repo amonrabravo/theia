@@ -5,10 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Lib\bootstrap\dist\js\bootstrap.bundle.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\css\admin\" />
-    <Folder Include="wwwroot\css\site\" />
     <Folder Include="wwwroot\js\admin\" />
     <Folder Include="wwwroot\js\site\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
   </ItemGroup>
 
 </Project>
