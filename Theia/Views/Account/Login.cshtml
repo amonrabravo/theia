@@ -1,0 +1,85 @@
+﻿@model LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+    ViewData["Title"] = "Kullanıcı girişi";
+}
+<div class="h-100 bg-light d-flex flex-column align-items-center justify-content-center">
+    <div class="card shadow-sm">
+        <div class="card-body" style="min-width: 320px;">
+            <div class="card-title text-center text-secondary d-flex flex-column">
+                <i class="fas fa-5x fa-user-circle"></i>
+                <div class="h4">
+                    Kullanıcı Girişi
+                </div>
+            </div>
+            @if (!ViewContext.ModelState.IsValid)
+            {
+                <div class="card-text">
+                    <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <div asp-validation-summary="ModelOnly"></div>
+                    </div>
+                </div>
+            }
+            <div class="card-text">
+                <form novalidate asp-action="Login" method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="UserName"></label>
+                                <input type="email" asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input type="password" asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" asp-for="RememberMe">
+                                    <label class="custom-control-label" asp-for="RememberMe"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sign-in-alt"></i> Giriş
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-subtitle d-flex justify-content-center">
+                <a asp-action="Register" class="p-2 text-decoration-none">
+                    <i class="fas fa-user-plus"></i>
+                    Yeni Üyelik
+                </a>
+                <a asp-action="ForgotPassword" class="p-2 text-decoration-none">
+                    <i class="fas fa-lock"></i>
+                    Parolamı Yenile
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 small text-secondary">
+        <b>Theia</b>Commerce - &copy;@DateTime.Today.Year - Tüm hakları saklıdır.
+    </div>
+</div>
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

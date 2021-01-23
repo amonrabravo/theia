@@ -1,1 +1,37 @@
-﻿@import "../bootstrap/scss/bootstrap.scss";
+﻿
+$font-size-base: .8rem;
+$enable-rounded: false;
+@import "../bootstrap/scss/bootstrap.scss";
+
+.side-nav {
+    @extend .bg-dark;
+    @extend .text-light;
+    @extend .h-100;
+    @extend .d-none;
+    @extend .d-md-block;
+    min-width: 240px;
+}
+
+.card.card-default {
+    border-top: .15rem solid $secondary;
+}
+
+.card.card-primary {
+    border-top: .15rem solid $primary;
+}
+
+.card.card-info {
+    border-top: .15rem solid $info;
+}
+
+.card.card-success {
+    border-top: .15rem solid $success;
+}
+
+.card.card-warning {
+    border-top: .15rem solid $warning;
+}
+
+.card.card-danger {
+    border-top: .15rem solid $danger;
+}

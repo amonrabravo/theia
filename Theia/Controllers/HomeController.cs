@@ -23,6 +23,12 @@ namespace Theia.Controllers
             return View();
         }
 
+        [Route("/Home/Error/{code:int}")]
+        public IActionResult Error(int code)
+        {
+            return View($"~/Views/Shared/Error/{code}.cshtml");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

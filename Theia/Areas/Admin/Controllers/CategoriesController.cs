@@ -7,12 +7,19 @@ using System.Threading.Tasks;
 
 namespace Theia.Areas.Admin.Controllers
 {
-    [Area("admin"), Authorize(Roles = "Administrators,ProductAdministrators,OrderAdministrators")]
-    public class Dashboard : Controller
+    [Area("admin")]
+    [Authorize(Roles = "ProductAdministrators")]
+    public class CategoriesController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
     }
 }

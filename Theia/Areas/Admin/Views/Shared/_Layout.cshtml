@@ -1,14 +1,78 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr" class="h-100">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-
+    <link href="~/css/admin/admin.min.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
 </head>
-<body>
-    @RenderBody()
-
+<body class="h-100">
+    <div class="h-100 d-flex">
+        <div>
+            <div class="side-nav">
+                <nav class="navbar navbar-dark bg-secondary border-dark border-bottom shadow-sm">
+                    <a asp-controller="Dashboard" asp-action="Index" class="navbar-brand">
+                        <b>Theia</b>Commerce
+                    </a>
+                </nav>
+                <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                    <div class="p-2 small text-secondary">Genel</div>
+                    <a class="nav-link text-light" data-controller="Dashboard" asp-controller="Dashboard" asp-action="Index">
+                        <i class="fa fa-fw fa-chart-line"></i> Dashboard
+                    </a>
+                    <div class="p-2 small text-secondary">Katalog</div>
+                    <a class="nav-link text-light" data-controller="Categories" asp-controller="Categories" asp-action="Index">
+                        <i class="fa fa-fw fa-cubes"></i> Kategori Tanımları
+                    </a>
+                    <a class="nav-link text-light" data-controller="Products" asp-controller="Products" asp-action="Index">
+                        <i class="fa fa-fw fa-gift"></i> Ürün Tanımları
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="flex-fill d-flex flex-column bg-light">
+            <nav class="navbar navbar-light bg-white navbar-expand-lg border-bottom shadow-sm">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="topNav">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">
+                                <i class="fa fa-power-off"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="p-2 h4 border-bottom text-secondary">
+                <i class="fa fa-pen mr-1"></i>
+                @ViewData["Title"]
+            </div>
+            <div class="flex-fill overflow-auto border-bottom shadow-sm">
+                <div class="p-2">
+                    @RenderBody()
+                </div>
+            </div>
+            <div class="p-2 bg-white small d-flex justify-content-between">
+                <div>
+                    <b class="text-secondary">Theia</b>Commerce - &copy;@DateTime.Today.Year - Tüm hakları saklıdır
+                </div>
+                <div>
+                    Version 1.0beta
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin/admin.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(() => {
+            $('[data-controller=@ViewContext.RouteData.Values["controller"]').addClass('active')
+        })
+    </script>
 </body>
 </html>
