@@ -1,0 +1,32 @@
+﻿<div class="d-flex p-1 border flex-fill align-items-center">
+    <button type="button" class="tree-item-btn" ng-show="category.categories.length>0" ng-click="toggle()">
+        <i ng-if="collapsed" class="fa fa-fw fa-caret-right"></i>
+        <i ng-if="!collapsed" class="fa fa-fw fa-caret-down"></i>
+    </button>
+    <span class="flex-fill">{{category.name}}</span>
+    <button type="button" class="tree-item-btn" data-toggle="modal" data-target="#categoryModal" ng-click="add(category)"><i class="fa fa-fw fa-plus"></i></button>
+    <button type="button" class="tree-item-btn" ng-click=""><i class="fa fa-fw fa-times"></i></button>
+    <button type="button" class="tree-item-btn" ng-click=""><i class="fa fa-fw fa-edit"></i></button>
+</div>
+<ul ng-class=" { 'collapse' : collapsed , 'show' : !collapsed }">
+    <li item category="sub" ng-repeat="sub in category.categories"></li>
+</ul>
+<div id="categoryModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{modalTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

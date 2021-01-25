@@ -1,21 +1,82 @@
 ﻿@{
-    var entityName = "Reyon";
+    var entityName = "Kategori";
     ViewData["Title"] = $"{entityName} Tanımları";
 }
 
-<div class="card card-default">
+<div class="card card-primary">
     <div class="card-header d-flex">
         <div class="flex-fill">
             <i class="fa fa-list"></i>
             @entityName Listesi
         </div>
         <div>
-            <a asp-action="Create" class="btn btn-link py-1 text-secondary text-decoration-none">
-                <i class="fa fa-plus"></i> Yeni @entityName
-            </a>
         </div>
     </div>
-    <div class="card-body">
-
+    <div class="card-body" ng-app="app" ng-controller="ctrl">
+        <div class="category-tree">
+            <ul>
+                <li item category="category" ng-repeat="category in categories">
+                </li>
+            </ul>
+        </div>
+        
     </div>
 </div>
+
+
+<!-- Modal -->
+
+
+@section scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script>
+        'use strict';
+        var app = angular.module('app', []);
+
+        app.controller('ctrl', ($scope) => {
+            $scope.categories = [
+                { id: 1, name: 'Cat 1', parentId: null, categories: [] },
+                { id: 2, name: 'Cat 2', parentId: null, categories: [] },
+                {
+                    id: 3, name: 'Cat 3', parentId: 2, categories: [
+                        { id: 4, name: 'Cat 3 1', parentId: 3, categories: [] },
+                        { id: 5, name: 'Cat 3 2', parentId: 3, categories: [] },
+                        {
+                            id: 6, name: 'Cat 3 3', parentId: 3, categories: [
+                                { id: 7, name: 'Cat 3 3 1', parentId: 6, categories: [] },
+                                { id: 8, name: 'Cat 3 3 2', parentId: 6, categories: [] },
+                                { id: 9, name: 'Cat 3 3 3', parentId: 6, categories: [] },
+                                { id: 10, name: 'Cat 3 3 4', parentId: 6, categories: [] },
+                            ]
+                        },
+                    ]
+                },
+                { id: 11, name: 'Cat 4', parentId: null, categories: [] },
+                { id: 12, name: 'Cat 5', parentId: null, categories: [] },
+            ];
+        });
+        app.directive('item', function () {
+            return {
+                restrict: 'A',
+                scope: {
+                    category: '=',
+                    collapsed: '&'
+                },
+                link: ($scope) => {
+                    $scope.collapsed = true;
+                    $scope.modalTitle = 'kkkk'
+                    $scope.toggle = () => {
+                        $scope.collapsed = !$scope.collapsed;
+                    };
+                    $scope.add = (c) => {
+                        console.log(c.name)
+                        setTimeout(() => { $scope.modalTitle = c.name }, 10);
+                        
+                    }
+                },
+                templateUrl: '/Content/CategoryTreeItem.html'
+            };
+        })
+
+    </script>
+}

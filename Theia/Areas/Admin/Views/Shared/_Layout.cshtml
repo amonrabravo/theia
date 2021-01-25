@@ -17,15 +17,15 @@
                     </a>
                 </nav>
                 <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                    <div class="p-2 small text-secondary">Genel</div>
-                    <a class="nav-link text-light" data-controller="Dashboard" asp-controller="Dashboard" asp-action="Index">
+                    <div class="p-2 small text-light">Genel</div>
+                    <a class="nav-link text-white" data-controller="Dashboard" asp-controller="Dashboard" asp-action="Index">
                         <i class="fa fa-fw fa-chart-line"></i> Dashboard
                     </a>
-                    <div class="p-2 small text-secondary">Katalog</div>
-                    <a class="nav-link text-light" data-controller="Categories" asp-controller="Categories" asp-action="Index">
+                    <div class="p-2 small text-light">Katalog</div>
+                    <a class="nav-link text-white" data-controller="Categories" asp-controller="Categories" asp-action="Index">
                         <i class="fa fa-fw fa-cubes"></i> Kategori Tanımları
                     </a>
-                    <a class="nav-link text-light" data-controller="Products" asp-controller="Products" asp-action="Index">
+                    <a class="nav-link text-white" data-controller="Products" asp-controller="Products" asp-action="Index">
                         <i class="fa fa-fw fa-gift"></i> Ürün Tanımları
                     </a>
                 </div>
@@ -46,7 +46,7 @@
                     </ul>
                 </div>
             </nav>
-            <div class="p-2 h4 border-bottom text-secondary">
+            <div class="p-2 h4 border-bottom text-primary">
                 <i class="fa fa-pen mr-1"></i>
                 @ViewData["Title"]
             </div>
@@ -66,7 +66,7 @@
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/admin/admin.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>

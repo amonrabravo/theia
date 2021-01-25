@@ -6,6 +6,14 @@
       "library": "bootstrap@4.6.0",
       "destination": "Lib/bootstrap/",
       "files": [
+        "dist/js/bootstrap.bundle.js",
+        "dist/js/bootstrap.bundle.js.map",
+        "dist/js/bootstrap.bundle.min.js",
+        "dist/js/bootstrap.bundle.min.js.map",
+        "dist/js/bootstrap.js",
+        "dist/js/bootstrap.js.map",
+        "dist/js/bootstrap.min.js",
+        "dist/js/bootstrap.min.js.map",
         "scss/bootstrap-grid.scss",
         "scss/bootstrap-reboot.scss",
         "scss/bootstrap.scss",
@@ -95,8 +103,7 @@
         "scss/utilities/_stretched-link.scss",
         "scss/utilities/_text.scss",
         "scss/utilities/_visibility.scss",
-        "scss/vendor/_rfs.scss",
-        "dist/js/bootstrap.bundle.min.js"
+        "scss/vendor/_rfs.scss"
       ]
     }
   ]

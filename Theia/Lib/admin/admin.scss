@@ -1,6 +1,7 @@
 ﻿
 $font-size-base: .8rem;
 $enable-rounded: false;
+$primary: #b0007c;
 @import "../bootstrap/scss/bootstrap.scss";
 
 .side-nav {
@@ -34,4 +35,28 @@ $enable-rounded: false;
 
 .card.card-danger {
     border-top: .15rem solid $danger;
+}
+
+.category-tree {
+    ul {
+        list-style: none;
+        @extend .pl-4;
+
+        li {
+            margin-top: -1px;
+        }
+    }
+
+    button.tree-item-btn {
+        @extend .btn;
+        @extend .btn-link;
+        @extend .btn-sm;
+        &:hover {
+            color: lighten($primary, 30);
+            background: $light;
+        }
+        &:focus {
+            box-shadow: none;
+        }
+    }
 }

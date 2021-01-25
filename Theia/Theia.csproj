@@ -6,21 +6,37 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Areas\Admin\Views\Categories\CategoryTreeItem.html" />
     <None Remove="Lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Lib\bootstrap\dist\js\" />
+    <Folder Include="wwwroot\content\images\admin\" />
     <Folder Include="wwwroot\css\admin\" />
     <Folder Include="wwwroot\js\site\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\js\bootstrap.bundle.min.js">
+    <Content Update="wwwroot\content\CategoryTreeItem.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
