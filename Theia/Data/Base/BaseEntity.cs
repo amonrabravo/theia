@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Theia.Data.Base
 {
@@ -16,8 +17,13 @@ namespace Theia.Data.Base
         }
 
         public virtual int Id { get; set; }
+        
         public virtual int UserId { get; set; }
+
+        [Display(Name = "Sıralama")]
         public virtual bool Enabled { get; set; }
+
+        [Display(Name = "Tarih")]
         public virtual DateTime Date { get; set; }
 
         public virtual User User { get; set; }

@@ -37,26 +37,12 @@ $primary: #b0007c;
     border-top: .15rem solid $danger;
 }
 
-.category-tree {
-    ul {
-        list-style: none;
-        @extend .pl-4;
+.alert.alert-success {
+    background-color: $success;
+    color: $white;
+}
 
-        li {
-            margin-top: -1px;
-        }
-    }
-
-    button.tree-item-btn {
-        @extend .btn;
-        @extend .btn-link;
-        @extend .btn-sm;
-        &:hover {
-            color: lighten($primary, 30);
-            background: $light;
-        }
-        &:focus {
-            box-shadow: none;
-        }
-    }
+.alert.alert-danger {
+    background-color: $danger;
+    color: $white;
 }

@@ -1736,7 +1736,7 @@ textarea.form-control {
     .form-inline .custom-control-label {
       margin-bottom: 0; } }
 
-.btn, .category-tree button.tree-item-btn {
+.btn {
   display: inline-block;
   font-weight: 400;
   color: #212529;
@@ -1751,17 +1751,17 @@ textarea.form-control {
   border-radius: 0;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
   @media (prefers-reduced-motion: reduce) {
-    .btn, .category-tree button.tree-item-btn {
+    .btn {
       transition: none; } }
-  .btn:hover, .category-tree button.tree-item-btn:hover {
+  .btn:hover {
     color: #212529;
     text-decoration: none; }
-  .btn:focus, .category-tree button.tree-item-btn:focus, .btn.focus, .category-tree button.focus.tree-item-btn {
+  .btn:focus, .btn.focus {
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(176, 0, 124, 0.25); }
-  .btn.disabled, .category-tree button.disabled.tree-item-btn, .btn:disabled, .category-tree button.tree-item-btn:disabled {
+  .btn.disabled, .btn:disabled {
     opacity: 0.65; }
-  .btn:not(:disabled):not(.disabled), .category-tree button.tree-item-btn:not(:disabled):not(.disabled) {
+  .btn:not(:disabled):not(.disabled) {
     cursor: pointer; }
 
 a.btn.disabled,
@@ -2144,26 +2144,26 @@ fieldset:disabled a.btn {
     .show > .btn-outline-dark.dropdown-toggle:focus {
       box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5); }
 
-.btn-link, .category-tree button.tree-item-btn {
+.btn-link {
   font-weight: 400;
   color: #b0007c;
   text-decoration: none; }
-  .btn-link:hover, .category-tree button.tree-item-btn:hover {
+  .btn-link:hover {
     color: #640046;
     text-decoration: underline; }
-  .btn-link:focus, .category-tree button.tree-item-btn:focus, .btn-link.focus, .category-tree button.focus.tree-item-btn {
+  .btn-link:focus, .btn-link.focus {
     text-decoration: underline; }
-  .btn-link:disabled, .category-tree button.tree-item-btn:disabled, .btn-link.disabled, .category-tree button.disabled.tree-item-btn {
+  .btn-link:disabled, .btn-link.disabled {
     color: #6c757d;
     pointer-events: none; }
 
-.btn-lg, .btn-group-lg > .btn, .category-tree .btn-group-lg > button.tree-item-btn {
+.btn-lg, .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0; }
 
-.btn-sm, .btn-group-sm > .btn, .category-tree button.tree-item-btn {
+.btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.7rem;
   line-height: 1.5;
@@ -2406,22 +2406,17 @@ input[type="button"].btn-block {
   position: relative;
   display: inline-flex;
   vertical-align: middle; }
-  .btn-group > .btn, .category-tree .btn-group > button.tree-item-btn,
-  .btn-group-vertical > .btn, .category-tree
-  .btn-group-vertical > button.tree-item-btn {
+  .btn-group > .btn,
+  .btn-group-vertical > .btn {
     position: relative;
     flex: 1 1 auto; }
-    .btn-group > .btn:hover, .category-tree .btn-group > button.tree-item-btn:hover,
-    .btn-group-vertical > .btn:hover, .category-tree
-    .btn-group-vertical > button.tree-item-btn:hover {
+    .btn-group > .btn:hover,
+    .btn-group-vertical > .btn:hover {
       z-index: 1; }
-    .btn-group > .btn:focus, .category-tree .btn-group > button.tree-item-btn:focus, .btn-group > .btn:active, .category-tree .btn-group > button.tree-item-btn:active, .btn-group > .btn.active, .category-tree .btn-group > button.active.tree-item-btn,
-    .btn-group-vertical > .btn:focus, .category-tree
-    .btn-group-vertical > button.tree-item-btn:focus,
-    .btn-group-vertical > .btn:active, .category-tree
-    .btn-group-vertical > button.tree-item-btn:active,
-    .btn-group-vertical > .btn.active, .category-tree
-    .btn-group-vertical > button.active.tree-item-btn {
+    .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,
+    .btn-group-vertical > .btn:focus,
+    .btn-group-vertical > .btn:active,
+    .btn-group-vertical > .btn.active {
       z-index: 1; }
 
 .btn-toolbar {
@@ -2431,7 +2426,7 @@ input[type="button"].btn-block {
   .btn-toolbar .input-group {
     width: auto; }
 
-.btn-group > .btn:not(:first-child), .category-tree .btn-group > button.tree-item-btn:not(:first-child),
+.btn-group > .btn:not(:first-child),
 .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px; }
 
@@ -2445,11 +2440,11 @@ input[type="button"].btn-block {
   .dropleft .dropdown-toggle-split::before {
     margin-right: 0; }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .category-tree .btn-group-sm > button.tree-item-btn + .dropdown-toggle-split, .category-tree button.tree-item-btn + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem; }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .category-tree .btn-group-lg > button.tree-item-btn + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem; }
 
@@ -2457,24 +2452,20 @@ input[type="button"].btn-block {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center; }
-  .btn-group-vertical > .btn, .category-tree .btn-group-vertical > button.tree-item-btn,
+  .btn-group-vertical > .btn,
   .btn-group-vertical > .btn-group {
     width: 100%; }
-  .btn-group-vertical > .btn:not(:first-child), .category-tree .btn-group-vertical > button.tree-item-btn:not(:first-child),
+  .btn-group-vertical > .btn:not(:first-child),
   .btn-group-vertical > .btn-group:not(:first-child) {
     margin-top: -1px; }
 
-.btn-group-toggle > .btn, .category-tree .btn-group-toggle > button.tree-item-btn,
-.btn-group-toggle > .btn-group > .btn, .category-tree
-.btn-group-toggle > .btn-group > button.tree-item-btn {
+.btn-group-toggle > .btn,
+.btn-group-toggle > .btn-group > .btn {
   margin-bottom: 0; }
-  .btn-group-toggle > .btn input[type="radio"], .category-tree .btn-group-toggle > button.tree-item-btn input[type="radio"],
-  .btn-group-toggle > .btn input[type="checkbox"], .category-tree
-  .btn-group-toggle > button.tree-item-btn input[type="checkbox"],
-  .btn-group-toggle > .btn-group > .btn input[type="radio"], .category-tree
-  .btn-group-toggle > .btn-group > button.tree-item-btn input[type="radio"],
-  .btn-group-toggle > .btn-group > .btn input[type="checkbox"], .category-tree
-  .btn-group-toggle > .btn-group > button.tree-item-btn input[type="checkbox"] {
+  .btn-group-toggle > .btn input[type="radio"],
+  .btn-group-toggle > .btn input[type="checkbox"],
+  .btn-group-toggle > .btn-group > .btn input[type="radio"],
+  .btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
     position: absolute;
     clip: rect(0, 0, 0, 0);
     pointer-events: none; }
@@ -2520,39 +2511,21 @@ input[type="button"].btn-block {
 .input-group-prepend,
 .input-group-append {
   display: flex; }
-  .input-group-prepend .btn, .input-group-prepend .category-tree button.tree-item-btn, .category-tree .input-group-prepend button.tree-item-btn,
-  .input-group-append .btn,
-  .input-group-append .category-tree button.tree-item-btn, .category-tree
-  .input-group-append button.tree-item-btn {
+  .input-group-prepend .btn,
+  .input-group-append .btn {
     position: relative;
     z-index: 2; }
-    .input-group-prepend .btn:focus, .input-group-prepend .category-tree button.tree-item-btn:focus, .category-tree .input-group-prepend button.tree-item-btn:focus,
-    .input-group-append .btn:focus,
-    .input-group-append .category-tree button.tree-item-btn:focus, .category-tree
-    .input-group-append button.tree-item-btn:focus {
+    .input-group-prepend .btn:focus,
+    .input-group-append .btn:focus {
       z-index: 3; }
-  .input-group-prepend .btn + .btn, .input-group-prepend .category-tree button.tree-item-btn + .btn, .category-tree .input-group-prepend button.tree-item-btn + .btn, .input-group-prepend .category-tree .btn + button.tree-item-btn, .category-tree .input-group-prepend .btn + button.tree-item-btn, .input-group-prepend .category-tree button.tree-item-btn + button.tree-item-btn, .category-tree .input-group-prepend button.tree-item-btn + button.tree-item-btn,
+  .input-group-prepend .btn + .btn,
   .input-group-prepend .btn + .input-group-text,
-  .input-group-prepend .category-tree button.tree-item-btn + .input-group-text, .category-tree
-  .input-group-prepend button.tree-item-btn + .input-group-text,
   .input-group-prepend .input-group-text + .input-group-text,
   .input-group-prepend .input-group-text + .btn,
-  .input-group-prepend .category-tree .input-group-text + button.tree-item-btn, .category-tree
-  .input-group-prepend .input-group-text + button.tree-item-btn,
   .input-group-append .btn + .btn,
-  .input-group-append .category-tree button.tree-item-btn + .btn, .category-tree
-  .input-group-append button.tree-item-btn + .btn,
-  .input-group-append .category-tree .btn + button.tree-item-btn, .category-tree
-  .input-group-append .btn + button.tree-item-btn,
-  .input-group-append .category-tree button.tree-item-btn + button.tree-item-btn, .category-tree
-  .input-group-append button.tree-item-btn + button.tree-item-btn,
   .input-group-append .btn + .input-group-text,
-  .input-group-append .category-tree button.tree-item-btn + .input-group-text, .category-tree
-  .input-group-append button.tree-item-btn + .input-group-text,
   .input-group-append .input-group-text + .input-group-text,
-  .input-group-append .input-group-text + .btn,
-  .input-group-append .category-tree .input-group-text + button.tree-item-btn, .category-tree
-  .input-group-append .input-group-text + button.tree-item-btn {
+  .input-group-append .input-group-text + .btn {
     margin-left: -1px; }
 
 .input-group-prepend {
@@ -2586,10 +2559,8 @@ input[type="button"].btn-block {
 .input-group-lg > .custom-select,
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
-.input-group-lg > .input-group-prepend > .btn, .category-tree
-.input-group-lg > .input-group-prepend > button.tree-item-btn,
-.input-group-lg > .input-group-append > .btn, .category-tree
-.input-group-lg > .input-group-append > button.tree-item-btn {
+.input-group-lg > .input-group-prepend > .btn,
+.input-group-lg > .input-group-append > .btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   line-height: 1.5; }
@@ -2602,10 +2573,8 @@ input[type="button"].btn-block {
 .input-group-sm > .custom-select,
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
-.input-group-sm > .input-group-prepend > .btn, .category-tree
-.input-group-sm > .input-group-prepend > button.tree-item-btn,
-.input-group-sm > .input-group-append > .btn, .category-tree
-.input-group-sm > .input-group-append > button.tree-item-btn {
+.input-group-sm > .input-group-prepend > .btn,
+.input-group-sm > .input-group-append > .btn {
   padding: 0.25rem 0.5rem;
   font-size: 0.7rem;
   line-height: 1.5; }
@@ -3522,7 +3491,7 @@ input[type="button"].btn-block {
   .badge:empty {
     display: none; }
 
-.btn .badge, .category-tree button.tree-item-btn .badge {
+.btn .badge {
   position: relative;
   top: -1px; }
 
@@ -5654,7 +5623,7 @@ button.side-nav:focus {
 .py-4 {
   padding-bottom: 1.5rem !important; }
 
-.pl-4, .category-tree ul,
+.pl-4,
 .px-4 {
   padding-left: 1.5rem !important; }
 
@@ -6995,7 +6964,7 @@ a.text-dark:hover, a.text-dark:focus {
   *::after {
     text-shadow: none !important;
     box-shadow: none !important; }
-  a:not(.btn):not(.category-tree button.tree-item-btn) {
+  a:not(.btn) {
     text-decoration: underline; }
   abbr[title]::after {
     content: " (" attr(title) ")"; }
@@ -7068,14 +7037,10 @@ a.text-dark:hover, a.text-dark:focus {
 .card.card-danger {
   border-top: 0.15rem solid #dc3545; }
 
-.category-tree ul {
-  list-style: none; }
-  .category-tree ul li {
-    margin-top: -1px; }
+.alert.alert-success {
+  background-color: #28a745;
+  color: #fff; }
 
-.category-tree button.tree-item-btn:hover {
-  color: #ff4aca;
-  background: #f8f9fa; }
-
-.category-tree button.tree-item-btn:focus {
-  box-shadow: none; }
+.alert.alert-danger {
+  background-color: #dc3545;
+  color: #fff; }

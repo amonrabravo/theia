@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Theia.Data.Base;
 
 namespace Theia.Data
 {
     public class User : IdentityUser<int>, IBaseEntity
     {
+        [Display(Name = "Kullanıcı Adı")]
         public string Name { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();

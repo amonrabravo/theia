@@ -52,6 +52,24 @@
             </div>
             <div class="flex-fill overflow-auto border-bottom shadow-sm">
                 <div class="p-2">
+                    @if (TempData["success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa fa-check"></i> @TempData["success"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa fa-times"></i> @TempData["error"]
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
                     @RenderBody()
                 </div>
             </div>
@@ -68,11 +86,20 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/admin/admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         $(() => {
             $('[data-controller=@ViewContext.RouteData.Values["controller"]').addClass('active')
-        })
+        });
+        var removeConfirm = Swal.mixin({
+            icon: 'warning',
+            title: 'Uyarı!',
+            showCancelButton: true,
+            cancelButtonText: '<i class="fa fa-times"></i> İptal',
+            confirmButtonText: '<i class="fa fa-trash"></i> Sil',
+            heightAuto: false
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,47 @@
+﻿@model Category
+@{
+    var entityName = "Kategori";
+    ViewData["Title"] = $"{entityName} Ekleme";
+    //var parentCategory = ViewBag.ParentCategory as Category;
+}
+
+<div class="card card-default mb-2">
+    <div class="card-header d-flex">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            Üst Kategori
+        </div>
+    </div>
+    <div class="card-body">
+        <h2>@ViewBag.Path</h2>
+    </div>
+</div>
+
+<div class="card card-primary">
+    <div class="card-header d-flex">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Ekleme Formu
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="ParentId" />
+            <partial name="CreateOrUpdate" model="Model" />
+            <hr />
+            @if (Model.ParentId == null)
+            {
+                <a asp-action="Index" class="mr-2">İptal</a>
+            }
+            else
+            {
+                <a asp-action="Edit" asp-route-id="@Model.ParentId" class="mr-2">İptal</a>
+            }
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kaydet</button>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
