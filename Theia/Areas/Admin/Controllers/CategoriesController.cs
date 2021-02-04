@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Theia.Data;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace Theia.Areas.Admin.Controllers
 {
@@ -41,6 +44,17 @@ namespace Theia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.PictureFile != null)
+                {
+                    using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                    {
+                        image.Mutate(p => p.Resize(new ResizeOptions
+                        {
+                            Size = new Size(320, 240)
+                        }));
+                        model.Picture = image.ToBase64String(PngFormat.Instance);
+                    }
+                }
                 var nextOrder = ((await context.Categories.Where(_ => _.ParentId == model.ParentId).OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
@@ -65,10 +79,21 @@ namespace Theia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.PictureFile!=null)
+                {
+                    using (var image =await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                    {
+                        image.Mutate(p => p.Resize(new ResizeOptions
+                        {
+                            Size = new Size(320, 240)
+                        }));
+                        model.Picture = image.ToBase64String(PngFormat.Instance);
+                    }
+                }
                 context.Entry(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
-                return RedirectToAction("Index", new { id = model.ParentId });
+                return model.ParentId == null ? RedirectToAction("Index", new { id = model.ParentId }) : RedirectToAction("Edit", new { id = model.ParentId });
             }
             else
                 return View(model);

@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Theia.Areas.Admin.Utils;
@@ -13,7 +15,14 @@ namespace Theia.Data
         [Display(Name = "Kategori Adı")]
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Name { get; set; }
+        
         public int? ParentId { get; set; }
+
+        public string Picture { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Görsel")]
+        public IFormFile PictureFile { get; set; }
 
         public virtual Category Parent { get; set; }
         public virtual ICollection<Category> Children { get; set; } = new HashSet<Category>();
@@ -28,8 +37,6 @@ namespace Theia.Data
             nameList.Insert(0,"Kategoriler");
             return string.Join(" / ", nameList);
         }
-
-
 
         private static void getParents(AppDbContext context, int id, ref List<string> nameList)
         {
@@ -58,6 +65,10 @@ namespace Theia.Data
                     .HasForeignKey(p => p.ParentId)
                     .OnDelete(DeleteBehavior.Restrict);
 
+                entity
+                    .Property(p => p.Picture)
+                    .IsUnicode(false)
+                    .IsRequired(false);
             });
 
         }
