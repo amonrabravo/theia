@@ -7,11 +7,14 @@ namespace Theia.Data
     public class Product : BaseEntity
     {
         public string Name { get; set; }
+        public string ProductCode { get; set; }
         public decimal Price { get; set; }
         public string Picture { get; set; }
         public string Descriptions { get; set; }
         public int Reviews { get; set; } = 0;
+        public int? BrandId { get; set; }
 
+        public virtual Brand Brand { get; set; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new HashSet<ProductVariant>();
         public virtual ICollection<ProductPicture> ProductPictures { get; set; } = new HashSet<ProductPicture>();
@@ -26,29 +29,37 @@ namespace Theia.Data
                     .IsUnique();
 
                 entity
+                    .HasIndex(p => new { p.ProductCode })
+                    .IsUnique();
+
+                entity
                     .Property(p => p.Name)
                     .HasMaxLength(250)
                     .IsRequired();
 
                 entity
-                .Property(p => p.Price)
-                .HasColumnType("money");
+                    .Property(p => p.ProductCode)
+                    .HasMaxLength(250);
 
                 entity
-                .Property(p => p.Picture)
-                .IsUnicode(false);
+                    .Property(p => p.Price)
+                    .HasColumnType("money");
 
                 entity
-                .HasMany(p => p.ProductPictures)
-                .WithOne(p => p.Product)
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                    .Property(p => p.Picture)
+                    .IsUnicode(false);
 
                 entity
-                .HasMany(p => p.Comments)
-                .WithOne(p => p.Product)
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                    .HasMany(p => p.ProductPictures)
+                    .WithOne(p => p.Product)
+                    .HasForeignKey(p => p.ProductId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity
+                    .HasMany(p => p.Comments)
+                    .WithOne(p => p.Product)
+                    .HasForeignKey(p => p.ProductId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
             });
 

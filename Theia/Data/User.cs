@@ -13,6 +13,7 @@ namespace Theia.Data
 
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
+        public virtual ICollection<Brand> Brands { get; set; } = new HashSet<Brand>();
 
         public void Build(ModelBuilder builder)
         {
@@ -31,6 +32,12 @@ namespace Theia.Data
 
                 entity
                 .HasMany(p => p.Products)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                .HasMany(p => p.Brands)
                 .WithOne(p => p.User)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
