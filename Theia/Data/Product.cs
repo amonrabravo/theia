@@ -42,10 +42,6 @@ namespace Theia.Data
                     .HasMaxLength(250);
 
                 entity
-                    .Property(p => p.Price)
-                    .HasColumnType("money");
-
-                entity
                     .Property(p => p.Picture)
                     .IsUnicode(false);
 

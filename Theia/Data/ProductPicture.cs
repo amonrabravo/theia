@@ -6,7 +6,7 @@ namespace Theia.Data
     public class ProductPicture : BaseSortableEntity
     {
         public int ProductId { get; set; }
-        public byte[] Content { get; set; }
+        public string Picture { get; set; }
 
         public virtual Product Product { get; set; }
 
@@ -15,10 +15,9 @@ namespace Theia.Data
             builder.Entity<ProductPicture>(entity =>
             {
                 entity
-                .Property(p => p.Content)
-                .IsRequired()
-                .HasColumnType("varbinary");
-
+                .Property(p => p.Picture)
+                .IsUnicode(false)
+                .IsRequired();
             });
         }
     }

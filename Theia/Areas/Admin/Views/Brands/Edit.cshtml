@@ -1,0 +1,64 @@
+﻿@model Brand
+@{
+    var entityName = "Marka";
+    ViewData["Title"] = $"{entityName} Güncelleme";
+}
+
+<div class="card card-primary mb-2">
+    <div class="card-header d-flex" data-toggle="collapse" data-target="#editFormCardBody">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Güncelleme Formu
+        </div>
+    </div>
+    <div class="card-body collapse show" id="editFormCardBody">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="Date" />
+            <input type="hidden" asp-for="SortOrder" />
+            <input type="hidden" asp-for="Picture" />
+            <partial name="CreateOrUpdate" model="Model" />
+            <div class="form-row">
+                <div class="col-6">
+                    <img id="PictureFilePreview" src="@(Model.Picture!=null ? Model.Picture : "/content/images/no-image-320-240.jpg")" alt="@Model.Name" width="320" height="240" class="d-block border p-2 shadow-sm mb-2" />
+                    <span class="small text-secondary mb-2">(değiştirmek istiyorsanız doldurunuz)</span>
+                    <div class="form-group">
+                        <label asp-for="PictureFile"></label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" asp-for="PictureFile">
+                            <label class="custom-file-label" for="PictureFile" data-browse="Gözat">dosya seçiniz...</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-light">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <ul class="list-unstyled">
+                            <li>En iyi görünüm için 320&times;240 piksel görsel dosyaları yükleyiniz.</li>
+                            <li>Yüklenen dosyalar otomatik olarak 320&times;240 piksel ebadına getirilecektir..</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <a asp-action="Index" class="mr-2">İptal</a>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kaydet</button>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
+
+            $('#PictureFile').change(function (e) {
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('#PictureFilePreview').attr('src', fileReader.result);
+                };
+                fileReader.readAsDataURL(e.target.files[0]);
+            });
+        });
+    </script>
+}

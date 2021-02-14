@@ -33,7 +33,16 @@ namespace Theia
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                switch (Configuration.GetValue<string>("Application:Database"))
+                {
+                    case "mysql":
+                        options.UseMySql(Configuration.GetConnectionString("Default"), ServerVersion.AutoDetect(Configuration.GetConnectionString("Default")));
+                        break;
+                    case "sqlserver":
+                    default:
+                        options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                        break;
+                }
                 options.UseLazyLoadingProxies();
 
             })
@@ -53,7 +62,7 @@ namespace Theia
                     options.SignIn.RequireConfirmedEmail = Configuration.GetValue<bool>("Security:SignIn:RequireConfirmedEmail");
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
-                
+
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();

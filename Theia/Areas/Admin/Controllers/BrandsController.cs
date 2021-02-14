@@ -15,14 +15,14 @@ namespace Theia.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = "ProductAdministrators")]
-    public class CategoriesController : Controller
+    public class BrandsController : Controller
     {
         private readonly AppDbContext context;
         private readonly UserManager<User> userManager;
 
-        private readonly string entityName = "Kategori";
+        private readonly string entityName = "Marka";
 
-        public CategoriesController(AppDbContext context, UserManager<User> userManager)
+        public BrandsController(AppDbContext context, UserManager<User> userManager)
         {
             this.context = context;
             this.userManager = userManager;
@@ -30,17 +30,16 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await context.Categories.Where(p => p.ParentId == null).OrderBy(p=>p.SortOrder).ToListAsync());
+            return View(await context.Brands.OrderBy(p => p.SortOrder).ToListAsync());
         }
 
-        public IActionResult Create(int? parentId = null)
+        public IActionResult Create()
         {
-            ViewBag.Path = Category.GetPath(context, parentId);
-            return View(new Category { Enabled = true, ParentId = parentId });
+            return View(new Brand { Enabled = true });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Category model)
+        public async Task<IActionResult> Create(Brand model)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +63,7 @@ namespace Theia.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
-                var nextOrder = ((await context.Categories.Where(_ => _.ParentId == model.ParentId).OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
+                var nextOrder = ((await context.Brands.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
                 model.SortOrder = nextOrder;
@@ -72,19 +71,18 @@ namespace Theia.Areas.Admin.Controllers
                 context.Entry(model).State = EntityState.Added;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
-                return model.ParentId == null ? RedirectToAction("Index", new { id = model.ParentId }) : RedirectToAction("Edit", new { id = model.ParentId });
+                return RedirectToAction("Index");
             }
             else
                 return View(model);
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.Path = Category.GetPath(context, id.Value);
-            return View(await context.Categories.FindAsync(id));
+            return View(await context.Brands.FindAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Category model)
+        public async Task<IActionResult> Edit(Brand model)
         {
             if (ModelState.IsValid)
             {
@@ -110,14 +108,14 @@ namespace Theia.Areas.Admin.Controllers
                 context.Entry(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
-                return model.ParentId == null ? RedirectToAction("Index", new { id = model.ParentId }) : RedirectToAction("Edit", new { id = model.ParentId });
+                return RedirectToAction("Index");
             }
             else
                 return View(model);
         }
         public async Task<IActionResult> Remove(int id)
         {
-            var model = await context.Categories.FindAsync(id);
+            var model = await context.Brands.FindAsync(id);
             context.Entry(model).State = EntityState.Deleted;
             try
             {
@@ -128,13 +126,13 @@ namespace Theia.Areas.Admin.Controllers
             {
                 TempData["error"] = $"{model.Name} ile ilişkili bir ya da daha fazla kayıt olduğu için silme işlemi tamamlanamıyor.";
             }
-            return model.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = model.ParentId });
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> MoveUp(int id)
         {
-            var subject = await context.Categories.FindAsync(id);
-            var target = await context.Categories.Where(p => p.ParentId == subject.ParentId && p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            var subject = await context.Brands.FindAsync(id);
+            var target = await context.Brands.Where(p => p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
@@ -145,12 +143,12 @@ namespace Theia.Areas.Admin.Controllers
                 await context.SaveChangesAsync();
                 TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
             }
-            return subject.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = subject.ParentId });
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> MoveDn(int id)
         {
-            var subject = await context.Categories.FindAsync(id);
-            var target = await context.Categories.Where(p => p.ParentId == subject.ParentId && p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
+            var subject = await context.Brands.FindAsync(id);
+            var target = await context.Brands.Where(p => p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
@@ -161,7 +159,7 @@ namespace Theia.Areas.Admin.Controllers
                 await context.SaveChangesAsync();
                 TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
             }
-            return subject.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = subject.ParentId });
+            return RedirectToAction("Index");
         }
     }
 }
