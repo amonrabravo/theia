@@ -15,7 +15,7 @@ namespace Theia.Data
         [Display(Name = "Kategori Adı")]
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Name { get; set; }
-        
+
         public int? ParentId { get; set; }
 
         public string Picture { get; set; }
@@ -29,21 +29,44 @@ namespace Theia.Data
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         public virtual ICollection<CategoryVariantGroup> CategoryVariantGroups { get; set; } = new HashSet<CategoryVariantGroup>();
 
-        public static string GetPath(AppDbContext context, int id)
+        public static string GetPath(AppDbContext context, int? id)
         {
             var nameList = new List<string>();
-            getParents(context, id,ref nameList);
+            if (id == null)
+            {
+                nameList.Add("Kategoriler");
+                return string.Join(" / ", nameList);
+            }
+            getParentNames(context, id.Value, ref nameList);
             nameList.Reverse();
-            nameList.Insert(0,"Kategoriler");
+            nameList.Insert(0, "Kategoriler");
             return string.Join(" / ", nameList);
         }
 
-        private static void getParents(AppDbContext context, int id, ref List<string> nameList)
+
+
+        private static void getParentNames(AppDbContext context, int? id, ref List<string> nameList)
         {
             var category = context.Categories.Include(p => p.Parent).Single(p => p.Id == id);
             nameList.Add(category.Name);
             if (category.Parent != null)
-                getParents(context, category.ParentId.Value, ref nameList);
+                getParentNames(context, category.ParentId.Value, ref nameList);
+        }
+
+        public IEnumerable<Category> GetPathItems()
+        {
+            var itemList = new List<Category>();
+            getParentItems(this, ref itemList);
+            itemList.Reverse();
+            return itemList;
+        }
+        private void getParentItems(Category item, ref List<Category> itemList)
+        {
+            if (item.Parent != null)
+            {
+                itemList.Add(item.Parent);
+                getParentItems(item.Parent,ref itemList);
+            }
         }
 
         public override void Build(ModelBuilder builder)

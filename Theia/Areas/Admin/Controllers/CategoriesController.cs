@@ -30,12 +30,12 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await context.Categories.Include(p => p.User).Where(p => p.ParentId == null).ToListAsync());
+            return View(await context.Categories.Where(p => p.ParentId == null).OrderBy(p=>p.SortOrder).ToListAsync());
         }
 
         public IActionResult Create(int? parentId = null)
         {
-            ViewBag.Path = Category.GetPath(context, parentId.Value);
+            ViewBag.Path = Category.GetPath(context, parentId);
             return View(new Category { Enabled = true, ParentId = parentId });
         }
 
@@ -46,13 +46,22 @@ namespace Theia.Areas.Admin.Controllers
             {
                 if (model.PictureFile != null)
                 {
-                    using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                    try
                     {
-                        image.Mutate(p => p.Resize(new ResizeOptions
+
+                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
                         {
-                            Size = new Size(320, 240)
-                        }));
-                        model.Picture = image.ToBase64String(PngFormat.Instance);
+                            image.Mutate(p => p.Resize(new ResizeOptions
+                            {
+                                Size = new Size(320, 240)
+                            }));
+                            model.Picture = image.ToBase64String(PngFormat.Instance);
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        return View(model);
                     }
                 }
                 var nextOrder = ((await context.Categories.Where(_ => _.ParentId == model.ParentId).OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
@@ -79,15 +88,23 @@ namespace Theia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.PictureFile!=null)
+                if (model.PictureFile != null)
                 {
-                    using (var image =await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                    try
                     {
-                        image.Mutate(p => p.Resize(new ResizeOptions
+                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
                         {
-                            Size = new Size(320, 240)
-                        }));
-                        model.Picture = image.ToBase64String(PngFormat.Instance);
+                            image.Mutate(p => p.Resize(new ResizeOptions
+                            {
+                                Size = new Size(320, 240)
+                            }));
+                            model.Picture = image.ToBase64String(PngFormat.Instance);
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        return View(model);
                     }
                 }
                 context.Entry(model).State = EntityState.Modified;
@@ -112,6 +129,39 @@ namespace Theia.Areas.Admin.Controllers
                 TempData["error"] = $"{model.Name} ile ilişkili bir ya da daha fazla kayıt olduğu için silme işlemi tamamlanamıyor.";
             }
             return model.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = model.ParentId });
+        }
+
+        public async Task<IActionResult> MoveUp(int id)
+        {
+            var subject = await context.Categories.FindAsync(id);
+            var target = await context.Categories.Where(p => p.ParentId == subject.ParentId && p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            if (target != null)
+            {
+                var m = target.SortOrder;
+                target.SortOrder = subject.SortOrder;
+                subject.SortOrder = m;
+                context.Entry(subject).State = EntityState.Modified;
+                context.Entry(target).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
+            }
+            return subject.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = subject.ParentId });
+        }
+        public async Task<IActionResult> MoveDn(int id)
+        {
+            var subject = await context.Categories.FindAsync(id);
+            var target = await context.Categories.Where(p => p.ParentId == subject.ParentId && p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
+            if (target != null)
+            {
+                var m = target.SortOrder;
+                target.SortOrder = subject.SortOrder;
+                subject.SortOrder = m;
+                context.Entry(subject).State = EntityState.Modified;
+                context.Entry(target).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
+            }
+            return subject.ParentId == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = subject.ParentId });
         }
     }
 }

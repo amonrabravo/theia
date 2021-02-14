@@ -20,7 +20,7 @@ namespace Theia.Data.Base
         
         public virtual int UserId { get; set; }
 
-        [Display(Name = "Sıralama")]
+        [Display(Name = "Etkin")]
         public virtual bool Enabled { get; set; }
 
         [Display(Name = "Tarih")]

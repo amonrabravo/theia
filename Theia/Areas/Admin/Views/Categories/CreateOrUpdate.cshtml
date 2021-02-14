@@ -2,6 +2,23 @@
 <div class="form-row">
     <div class="col-6">
         <div class="form-group">
+            <ul class="breadcrumb p-0 bg-transparent">
+                @foreach (var categoryParent in Model.GetPathItems())
+                {
+                    <li class="breadcrumb-item">
+                        <a asp-action="Edit" asp-route-id="@categoryParent.Id">@categoryParent.Name</a>
+                    </li>
+                }
+                <li class="breadcrumb-item active">
+                    @Model.Name
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-6">
+        <div class="form-group">
             <label asp-for="Name"></label>
             <input type="text" asp-for="Name" class="form-control" />
             <span asp-validation-for="Name"></span>

@@ -65,6 +65,9 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(() => {
+
+            $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
+
             $('#PictureFile').change(function (e) {
                 var fileReader = new FileReader();
                 fileReader.onload = function () {
