@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
     public class Role: IdentityRole<int>
     {

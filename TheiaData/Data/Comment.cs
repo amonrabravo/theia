@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Theia.Data.Base;
+using TheiaData.Data.Base;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
     public enum CommentType
     {
@@ -13,9 +13,7 @@ namespace Theia.Data
         public int ProductId { get; set; }
         public CommentType CommentType { get; set; } = CommentType.Positive;
         public string Text { get; set; }
-
         public virtual Product Product { get; set; }
-
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<Comment>(entity =>

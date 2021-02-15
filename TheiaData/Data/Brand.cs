@@ -3,24 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Theia.Data.Base;
+using TheiaData.Data.Base;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
     public class Brand : BaseSortableEntity
     {
         [Display(Name = "Marka Adı")]
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Name { get; set; }
-
         public string Picture { get; set; }
-        
         [NotMapped]
         [Display(Name = "Görsel")]
         public IFormFile PictureFile { get; set; }
-
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
-
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<Brand>(entity =>

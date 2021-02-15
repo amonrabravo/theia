@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -9,11 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Theia.Data;
+using TheiaData;
+using TheiaData.Data;
 
 namespace Theia
 {
@@ -33,14 +31,21 @@ namespace Theia
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                switch (Configuration.GetValue<string>("Application:Database"))
+                switch (Configuration.GetValue<string>("Application:DatabaseProvider"))
                 {
                     case "mysql":
-                        options.UseMySql(Configuration.GetConnectionString("Default"), ServerVersion.AutoDetect(Configuration.GetConnectionString("Default")));
+                        options.UseMySql(
+                            Configuration.GetConnectionString("MySql"),
+                            ServerVersion.AutoDetect(Configuration.GetConnectionString("MySql")),
+                            x => x.MigrationsAssembly("MigrationsMySql")
+                            );
                         break;
                     case "sqlserver":
                     default:
-                        options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                        options.UseSqlServer(
+                            Configuration.GetConnectionString("SqlServer"),
+                            x => x.MigrationsAssembly("MigrationsSqlServer")
+                            );
                         break;
                 }
                 options.UseLazyLoadingProxies();

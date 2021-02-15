@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Utils\" />
     <Folder Include="Lib\bootstrap\dist\js\" />
     <Folder Include="Services\" />
     <Folder Include="wwwroot\content\images\admin\" />
@@ -53,6 +54,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MigrationsMySql\MigrationsMySql.csproj" />
+    <ProjectReference Include="..\MigrationsSqlServer\MigrationsSqlServer.csproj" />
+    <ProjectReference Include="..\TheiaData\TheiaData.csproj" />
   </ItemGroup>
 
 </Project>

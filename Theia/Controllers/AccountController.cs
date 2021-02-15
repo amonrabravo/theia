@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Theia.Data;
+using TheiaData.Data;
 using Theia.Models;
 
 namespace Theia.Controllers

@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Theia.Data.Base;
+using TheiaData.Data.Base;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
-    public class VariantGroup : BaseEntity
+    public class VariantGroup : BaseSortableEntity
     {
         public string Name { get; set; }
-
         public virtual ICollection<CategoryVariantGroup> CategoryVariantGroups { get; set; } = new HashSet<CategoryVariantGroup>();
         public virtual ICollection<Variant> Variants { get; set; } = new HashSet<Variant>();
-
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<VariantGroup>(entity =>

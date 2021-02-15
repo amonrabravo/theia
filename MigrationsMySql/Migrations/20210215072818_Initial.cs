@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Theia.Migrations
+namespace MigrationsMySql.Migrations
 {
-    public partial class Mig001 : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -221,7 +221,8 @@ namespace Theia.Migrations
                     Name = table.Column<string>(type: "varchar(50) CHARACTER SET utf8mb4", maxLength: 50, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Enabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    SortOrder = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,7 +245,7 @@ namespace Theia.Migrations
                     ProductCode = table.Column<string>(type: "varchar(250) CHARACTER SET utf8mb4", maxLength: 250, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     Picture = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", unicode: false, nullable: true),
-                    Descriptions = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
+                    Descriptions = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false),
                     Reviews = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),

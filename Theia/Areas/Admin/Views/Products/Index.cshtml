@@ -16,6 +16,29 @@
         </div>
     </div>
     <div class="card-body">
-
+        <table id="dataTable" class="table table-striped table-bordered"></table>
     </div>
 </div>
+
+@section scripts{
+    <partial name="_DataTablesPartial" />
+    <script>
+            $(() => {
+                $('#dataTable').DataTable();
+
+                $('.remove-btn').on('click', function () {
+                    const name = $(this).attr('data-name');
+                    const href = $(this).attr('href');
+                    removeConfirm.fire({
+                        text: name + ' isimli @entityName.ToLower() TAMAMEN silinecektir. Silme işlemine devam etmek istiyormusunuz?'
+                    })
+                        .then(result => {
+                            if (result.value) {
+                                window.location = href;
+                            }
+                        });
+                    return false;
+                });
+            });
+    </script>
+}

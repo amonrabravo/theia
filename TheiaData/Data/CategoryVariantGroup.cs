@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Theia.Data.Base;
+using TheiaData.Data.Base;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
     public class CategoryVariantGroup : IBaseEntity
     {
         public int CategoryId { get; set; }
         public int VariantGroupId { get; set; }
-
         public virtual Category Category { get; set; }
         public virtual VariantGroup VariantGroup { get; set; }
-
         public void Build(ModelBuilder builder)
         {
             builder.Entity<CategoryVariantGroup>(entity => {

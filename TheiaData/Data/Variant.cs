@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using Theia.Data.Base;
+using TheiaData.Data.Base;
 
-namespace Theia.Data
+namespace TheiaData.Data
 {
     public class Variant : BaseEntity
     {
@@ -10,10 +10,8 @@ namespace Theia.Data
         public int VariantGroupId { get; set; }
         public string Image { get; set; }
         public bool UseImage { get; set; } = false;
-
         public virtual VariantGroup VariantGroup { get; set; }
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new HashSet<ProductVariant>();
-
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<Variant>(entity =>

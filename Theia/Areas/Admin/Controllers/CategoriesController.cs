@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Theia.Data;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Formats.Png;
+using TheiaData;
+using TheiaData.Data;
 
 namespace Theia.Areas.Admin.Controllers
 {

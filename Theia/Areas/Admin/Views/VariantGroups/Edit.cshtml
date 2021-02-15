@@ -1,0 +1,42 @@
+﻿@model VariantGroup
+@{
+    var entityName = "Varyant Gurubu";
+    ViewData["Title"] = $"{entityName} Güncelleme";
+}
+
+<div class="card card-primary mb-2">
+    <div class="card-header d-flex" data-toggle="collapse" data-target="#editFormCardBody">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Güncelleme Formu
+        </div>
+    </div>
+    <div class="card-body collapse show" id="editFormCardBody">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="Date" />
+            <input type="hidden" asp-for="SortOrder" />
+            <partial name="CreateOrUpdate" model="Model" />
+            <hr />
+            <a asp-action="Index" class="mr-2">İptal</a>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kaydet</button>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(() => {
+            $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
+
+            $('#PictureFile').change(function (e) {
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('#PictureFilePreview').attr('src', fileReader.result);
+                };
+                fileReader.readAsDataURL(e.target.files[0]);
+            });
+        });
+    </script>
+}

@@ -3,9 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Theia;
+using TheiaData;
 
-namespace Theia.Migrations
+namespace MigrationsMySql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -116,7 +116,7 @@ namespace Theia.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Theia.Data.Brand", b =>
+            modelBuilder.Entity("TheiaData.Data.Brand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +153,7 @@ namespace Theia.Migrations
                     b.ToTable("Brands");
                 });
 
-            modelBuilder.Entity("Theia.Data.Category", b =>
+            modelBuilder.Entity("TheiaData.Data.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,7 +195,7 @@ namespace Theia.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Theia.Data.CategoryProduct", b =>
+            modelBuilder.Entity("TheiaData.Data.CategoryProduct", b =>
                 {
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -210,7 +210,7 @@ namespace Theia.Migrations
                     b.ToTable("CategoryProducts");
                 });
 
-            modelBuilder.Entity("Theia.Data.CategoryVariantGroup", b =>
+            modelBuilder.Entity("TheiaData.Data.CategoryVariantGroup", b =>
                 {
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -225,7 +225,7 @@ namespace Theia.Migrations
                     b.ToTable("CategoryVariantGroups");
                 });
 
-            modelBuilder.Entity("Theia.Data.Comment", b =>
+            modelBuilder.Entity("TheiaData.Data.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,7 +259,7 @@ namespace Theia.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Theia.Data.Product", b =>
+            modelBuilder.Entity("TheiaData.Data.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -272,6 +272,7 @@ namespace Theia.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Descriptions")
+                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("Enabled")
@@ -314,7 +315,7 @@ namespace Theia.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Theia.Data.ProductPicture", b =>
+            modelBuilder.Entity("TheiaData.Data.ProductPicture", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -349,7 +350,7 @@ namespace Theia.Migrations
                     b.ToTable("ProductPictures");
                 });
 
-            modelBuilder.Entity("Theia.Data.ProductVariant", b =>
+            modelBuilder.Entity("TheiaData.Data.ProductVariant", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -364,7 +365,7 @@ namespace Theia.Migrations
                     b.ToTable("ProductVariants");
                 });
 
-            modelBuilder.Entity("Theia.Data.Role", b =>
+            modelBuilder.Entity("TheiaData.Data.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,7 +395,7 @@ namespace Theia.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Theia.Data.User", b =>
+            modelBuilder.Entity("TheiaData.Data.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -464,7 +465,7 @@ namespace Theia.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Theia.Data.Variant", b =>
+            modelBuilder.Entity("TheiaData.Data.Variant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -505,7 +506,7 @@ namespace Theia.Migrations
                     b.ToTable("Variants");
                 });
 
-            modelBuilder.Entity("Theia.Data.VariantGroup", b =>
+            modelBuilder.Entity("TheiaData.Data.VariantGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -522,6 +523,9 @@ namespace Theia.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
 
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -537,7 +541,7 @@ namespace Theia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Theia.Data.Role", null)
+                    b.HasOne("TheiaData.Data.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -546,7 +550,7 @@ namespace Theia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Theia.Data.User", null)
+                    b.HasOne("TheiaData.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -555,7 +559,7 @@ namespace Theia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Theia.Data.User", null)
+                    b.HasOne("TheiaData.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -564,13 +568,13 @@ namespace Theia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Theia.Data.Role", null)
+                    b.HasOne("TheiaData.Data.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.User", null)
+                    b.HasOne("TheiaData.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,16 +583,16 @@ namespace Theia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Theia.Data.User", null)
+                    b.HasOne("TheiaData.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Theia.Data.Brand", b =>
+            modelBuilder.Entity("TheiaData.Data.Brand", b =>
                 {
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany("Brands")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -597,14 +601,14 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.Category", b =>
+            modelBuilder.Entity("TheiaData.Data.Category", b =>
                 {
-                    b.HasOne("Theia.Data.Category", "Parent")
+                    b.HasOne("TheiaData.Data.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany("Categories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -615,15 +619,15 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.CategoryProduct", b =>
+            modelBuilder.Entity("TheiaData.Data.CategoryProduct", b =>
                 {
-                    b.HasOne("Theia.Data.Category", "Category")
+                    b.HasOne("TheiaData.Data.Category", "Category")
                         .WithMany("CategoryProducts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.Product", "Product")
+                    b.HasOne("TheiaData.Data.Product", "Product")
                         .WithMany("CategoryProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -634,15 +638,15 @@ namespace Theia.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Theia.Data.CategoryVariantGroup", b =>
+            modelBuilder.Entity("TheiaData.Data.CategoryVariantGroup", b =>
                 {
-                    b.HasOne("Theia.Data.Category", "Category")
+                    b.HasOne("TheiaData.Data.Category", "Category")
                         .WithMany("CategoryVariantGroups")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.VariantGroup", "VariantGroup")
+                    b.HasOne("TheiaData.Data.VariantGroup", "VariantGroup")
                         .WithMany("CategoryVariantGroups")
                         .HasForeignKey("VariantGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -653,15 +657,15 @@ namespace Theia.Migrations
                     b.Navigation("VariantGroup");
                 });
 
-            modelBuilder.Entity("Theia.Data.Comment", b =>
+            modelBuilder.Entity("TheiaData.Data.Comment", b =>
                 {
-                    b.HasOne("Theia.Data.Product", "Product")
+                    b.HasOne("TheiaData.Data.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -672,14 +676,14 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.Product", b =>
+            modelBuilder.Entity("TheiaData.Data.Product", b =>
                 {
-                    b.HasOne("Theia.Data.Brand", "Brand")
+                    b.HasOne("TheiaData.Data.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -690,15 +694,15 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.ProductPicture", b =>
+            modelBuilder.Entity("TheiaData.Data.ProductPicture", b =>
                 {
-                    b.HasOne("Theia.Data.Product", "Product")
+                    b.HasOne("TheiaData.Data.Product", "Product")
                         .WithMany("ProductPictures")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -709,15 +713,15 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.ProductVariant", b =>
+            modelBuilder.Entity("TheiaData.Data.ProductVariant", b =>
                 {
-                    b.HasOne("Theia.Data.Product", "Product")
+                    b.HasOne("TheiaData.Data.Product", "Product")
                         .WithMany("ProductVariants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.Variant", "Variant")
+                    b.HasOne("TheiaData.Data.Variant", "Variant")
                         .WithMany("ProductVariants")
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -728,15 +732,15 @@ namespace Theia.Migrations
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("Theia.Data.Variant", b =>
+            modelBuilder.Entity("TheiaData.Data.Variant", b =>
                 {
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Theia.Data.VariantGroup", "VariantGroup")
+                    b.HasOne("TheiaData.Data.VariantGroup", "VariantGroup")
                         .WithMany("Variants")
                         .HasForeignKey("VariantGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -747,9 +751,9 @@ namespace Theia.Migrations
                     b.Navigation("VariantGroup");
                 });
 
-            modelBuilder.Entity("Theia.Data.VariantGroup", b =>
+            modelBuilder.Entity("TheiaData.Data.VariantGroup", b =>
                 {
-                    b.HasOne("Theia.Data.User", "User")
+                    b.HasOne("TheiaData.Data.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -758,12 +762,12 @@ namespace Theia.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Theia.Data.Brand", b =>
+            modelBuilder.Entity("TheiaData.Data.Brand", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Theia.Data.Category", b =>
+            modelBuilder.Entity("TheiaData.Data.Category", b =>
                 {
                     b.Navigation("CategoryProducts");
 
@@ -772,7 +776,7 @@ namespace Theia.Migrations
                     b.Navigation("Children");
                 });
 
-            modelBuilder.Entity("Theia.Data.Product", b =>
+            modelBuilder.Entity("TheiaData.Data.Product", b =>
                 {
                     b.Navigation("CategoryProducts");
 
@@ -783,7 +787,7 @@ namespace Theia.Migrations
                     b.Navigation("ProductVariants");
                 });
 
-            modelBuilder.Entity("Theia.Data.User", b =>
+            modelBuilder.Entity("TheiaData.Data.User", b =>
                 {
                     b.Navigation("Brands");
 
@@ -792,12 +796,12 @@ namespace Theia.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Theia.Data.Variant", b =>
+            modelBuilder.Entity("TheiaData.Data.Variant", b =>
                 {
                     b.Navigation("ProductVariants");
                 });
 
-            modelBuilder.Entity("Theia.Data.VariantGroup", b =>
+            modelBuilder.Entity("TheiaData.Data.VariantGroup", b =>
                 {
                     b.Navigation("CategoryVariantGroups");
 

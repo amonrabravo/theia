@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +13,14 @@ namespace Theia.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = "ProductAdministrators")]
-    public class BrandsController : Controller
+    public class VariantGroupsController : Controller
     {
         private readonly AppDbContext context;
         private readonly UserManager<User> userManager;
 
         private readonly string entityName = "Marka";
 
-        public BrandsController(AppDbContext context, UserManager<User> userManager)
+        public VariantGroupsController(AppDbContext context, UserManager<User> userManager)
         {
             this.context = context;
             this.userManager = userManager;
@@ -31,40 +28,20 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await context.Brands.OrderBy(p => p.SortOrder).ToListAsync());
+            return View(await context.VariantGroups.OrderBy(p => p.SortOrder).ToListAsync());
         }
 
         public IActionResult Create()
         {
-            return View(new Brand { Enabled = true });
+            return View(new VariantGroup { Enabled = true });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Brand model)
+        public async Task<IActionResult> Create(VariantGroup model)
         {
             if (ModelState.IsValid)
             {
-                if (model.PictureFile != null)
-                {
-                    try
-                    {
-
-                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
-                        {
-                            image.Mutate(p => p.Resize(new ResizeOptions
-                            {
-                                Size = new Size(320, 240)
-                            }));
-                            model.Picture = image.ToBase64String(PngFormat.Instance);
-                        }
-                    }
-                    catch (UnknownImageFormatException)
-                    {
-                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
-                        return View(model);
-                    }
-                }
-                var nextOrder = ((await context.Brands.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
+                var nextOrder = ((await context.VariantGroups.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
                 model.SortOrder = nextOrder;
@@ -79,33 +56,14 @@ namespace Theia.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            return View(await context.Brands.FindAsync(id));
+            return View(await context.VariantGroups.FindAsync(id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Brand model)
+        public async Task<IActionResult> Edit(VariantGroup model)
         {
             if (ModelState.IsValid)
             {
-                if (model.PictureFile != null)
-                {
-                    try
-                    {
-                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
-                        {
-                            image.Mutate(p => p.Resize(new ResizeOptions
-                            {
-                                Size = new Size(320, 240)
-                            }));
-                            model.Picture = image.ToBase64String(PngFormat.Instance);
-                        }
-                    }
-                    catch (UnknownImageFormatException)
-                    {
-                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
-                        return View(model);
-                    }
-                }
                 context.Entry(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
@@ -116,7 +74,7 @@ namespace Theia.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Remove(int id)
         {
-            var model = await context.Brands.FindAsync(id);
+            var model = await context.VariantGroups.FindAsync(id);
             context.Entry(model).State = EntityState.Deleted;
             try
             {
@@ -132,8 +90,8 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> MoveUp(int id)
         {
-            var subject = await context.Brands.FindAsync(id);
-            var target = await context.Brands.Where(p => p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            var subject = await context.VariantGroups.FindAsync(id);
+            var target = await context.VariantGroups.Where(p => p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
@@ -148,8 +106,8 @@ namespace Theia.Areas.Admin.Controllers
         }
         public async Task<IActionResult> MoveDn(int id)
         {
-            var subject = await context.Brands.FindAsync(id);
-            var target = await context.Brands.Where(p => p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
+            var subject = await context.VariantGroups.FindAsync(id);
+            var target = await context.VariantGroups.Where(p => p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;

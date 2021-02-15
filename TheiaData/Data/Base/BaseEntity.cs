@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Theia.Data.Base
+namespace TheiaData.Data.Base
 {
     public interface IBaseEntity
     {

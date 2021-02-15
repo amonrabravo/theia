@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Reflection;
-using Theia.Data;
-using Theia.Data.Base;
+using TheiaData.Data;
+using TheiaData.Data.Base;
 
-namespace Theia
+namespace TheiaData
 {
     public class AppDbContext : IdentityDbContext<User, Role, int>
     {
