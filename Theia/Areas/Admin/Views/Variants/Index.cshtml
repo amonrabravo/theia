@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Category>
+﻿@model IEnumerable<Variant>
 @{
-    var entityName = "Kategori";
+    var entityName = "Varyant";
     ViewData["Title"] = $"{entityName} Tanımları";
 }
 
@@ -20,8 +20,9 @@
         <table id="dataTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 10%">@Html.DisplayNameFor(_ => _.PictureFile)</th>
-                    <th style="width: 40%">@Html.DisplayNameFor(_ => _.Name)</th>
+                    <th style="width: 5%">@Html.DisplayNameFor(_ => _.Picture)</th>
+                    <th style="width: 10%">@Html.DisplayNameFor(_ => _.VariantGroupId)</th>
+                    <th style="width: 35%">@Html.DisplayNameFor(_ => _.Name)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.Enabled)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.Date)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.User.Name)</th>
@@ -30,17 +31,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model)
+                @foreach (var variant in Model)
                 {
                     <tr>
                         <td>
-                            <img id="PictureFilePreview" src="@(category.Picture != null ? category.Picture : "/content/images/no-image-320-240.jpg")" alt="@category.Name" height="64" class="border shadow-sm mb-2" />
+                            <img id="PictureFilePreview" src="@(variant.Picture != null ? variant.Picture : "/content/images/no-image-320-240.jpg")" alt="@variant.Name" height="32" class="border shadow-sm mb-2" />
                         </td>
                         <td>
-                            @category.Name
+                            @variant.VariantGroup.Name
                         </td>
                         <td>
-                            @if (category.Enabled)
+                            @variant.Name
+                        </td>
+                        <td>
+                            @if (variant.Enabled)
                             {
                                 <i class="fa fa-check text-success"></i>
                             }
@@ -50,24 +54,24 @@
                             }
                         </td>
                         <td>
-                            @category.Date.ToShortDateString()
+                            @variant.Date.ToShortDateString()
                         </td>
                         <td>
-                            @category.User.Name
+                            @variant.User.Name
                         </td>
                         <td class="text-center">
-                            <a asp-action="MoveUp" asp-route-id="@category.Id" class="text-secondary mr-2">
+                            <a asp-action="MoveUp" asp-route-id="@variant.Id" class="text-secondary mr-2">
                                 <i class="fa fa-caret-up"></i>
                             </a>
-                            <a asp-action="MoveDn" asp-route-id="@category.Id" class="text-secondary mr-2">
+                            <a asp-action="MoveDn" asp-route-id="@variant.Id" class="text-secondary mr-2">
                                 <i class="fa fa-caret-down"></i>
                             </a>
                         </td>
                         <td class="text-center">
-                            <a asp-action="Edit" asp-route-id="@category.Id" class="text-secondary mr-2">
+                            <a asp-action="Edit" asp-route-id="@variant.Id" class="text-secondary mr-2">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a asp-action="Remove" asp-route-id="@category.Id" data-name="@category.Name" class="text-secondary remove-btn">
+                            <a asp-action="Remove" asp-route-id="@variant.Id" data-name="@variant.Name" class="text-secondary remove-btn">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
@@ -83,7 +87,7 @@
     <script>
             $(() => {
                 $('#dataTable').DataTable({
-                    "order": [[5, "asc"]]
+                    "order": [[4, "asc"]]
                 });
 
                 $('.remove-btn').on('click', function () {

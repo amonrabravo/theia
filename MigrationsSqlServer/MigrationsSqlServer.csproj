@@ -17,9 +17,4 @@
   <ItemGroup>
     <ProjectReference Include="..\TheiaData\TheiaData.csproj" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <BaseOutputPath>..\Theia\bin\</BaseOutputPath>
-  </PropertyGroup>
-
 </Project>

@@ -52,6 +52,10 @@ namespace TheiaData.Data
                     .HasMaxLength(250);
 
                 entity
+                    .Property(p => p.Price)
+                    .HasPrecision(18,4);
+
+                entity
                     .Property(p => p.Picture)
                     .IsUnicode(false);
 

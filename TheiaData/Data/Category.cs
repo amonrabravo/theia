@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -54,7 +55,7 @@ namespace TheiaData.Data
             if (item.Parent != null)
             {
                 itemList.Add(item.Parent);
-                getParentItems(item.Parent,ref itemList);
+                getParentItems(item.Parent, ref itemList);
             }
         }
         public override void Build(ModelBuilder builder)
@@ -80,6 +81,8 @@ namespace TheiaData.Data
                     .Property(p => p.Picture)
                     .IsUnicode(false)
                     .IsRequired(false);
+
+
             });
 
         }

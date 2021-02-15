@@ -13,6 +13,7 @@ namespace TheiaData.Data
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
         public virtual ICollection<Brand> Brands { get; set; } = new HashSet<Brand>();
+        public virtual ICollection<VariantGroup> VariantGroups { get; set; } = new HashSet<VariantGroup>();
         public void Build(ModelBuilder builder)
         {
             builder.Entity<User>(entity =>

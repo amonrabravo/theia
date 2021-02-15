@@ -26,17 +26,4 @@
 
 @section scripts{
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(() => {
-            $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
-
-            $('#PictureFile').change(function (e) {
-                var fileReader = new FileReader();
-                fileReader.onload = function () {
-                    $('#PictureFilePreview').attr('src', fileReader.result);
-                };
-                fileReader.readAsDataURL(e.target.files[0]);
-            });
-        });
-    </script>
 }

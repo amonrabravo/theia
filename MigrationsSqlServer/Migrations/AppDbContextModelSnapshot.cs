@@ -297,7 +297,8 @@ namespace MigrationsSqlServer.Migrations
                         .HasColumnType("varchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ProductCode")
                         .HasMaxLength(250)
@@ -493,21 +494,24 @@ namespace MigrationsSqlServer.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("UseImage")
-                        .HasColumnType("bit");
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("VariantGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewMode")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -771,7 +775,7 @@ namespace MigrationsSqlServer.Migrations
             modelBuilder.Entity("TheiaData.Data.VariantGroup", b =>
                 {
                     b.HasOne("TheiaData.Data.User", "User")
-                        .WithMany()
+                        .WithMany("VariantGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -811,6 +815,8 @@ namespace MigrationsSqlServer.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Products");
+
+                    b.Navigation("VariantGroups");
                 });
 
             modelBuilder.Entity("TheiaData.Data.Variant", b =>

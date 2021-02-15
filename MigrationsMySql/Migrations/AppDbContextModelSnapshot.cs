@@ -288,7 +288,8 @@ namespace MigrationsMySql.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ProductCode")
                         .HasMaxLength(250)
@@ -477,21 +478,24 @@ namespace MigrationsMySql.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4");
 
-                    b.Property<bool>("UseImage")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("Picture")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("VariantGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ViewMode")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -754,7 +758,7 @@ namespace MigrationsMySql.Migrations
             modelBuilder.Entity("TheiaData.Data.VariantGroup", b =>
                 {
                     b.HasOne("TheiaData.Data.User", "User")
-                        .WithMany()
+                        .WithMany("VariantGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -794,6 +798,8 @@ namespace MigrationsMySql.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("Products");
+
+                    b.Navigation("VariantGroups");
                 });
 
             modelBuilder.Entity("TheiaData.Data.Variant", b =>

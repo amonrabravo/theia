@@ -20,7 +20,7 @@
         <table id="dataTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 40%">@Html.DisplayNameFor(_ => _.Name)</th>
+                    <th style="width: 50%">@Html.DisplayNameFor(_ => _.Name)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.Enabled)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.Date)</th>
                     <th style="width: 10%">@Html.DisplayNameFor(_ => _.User.Name)</th>
@@ -29,14 +29,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var brand in Model)
+                @foreach (var variantGroup in Model)
                 {
                     <tr>
                         <td>
-                            @brand.Name
+                            @variantGroup.Name
                         </td>
                         <td>
-                            @if (brand.Enabled)
+                            @if (variantGroup.Enabled)
                             {
                                 <i class="fa fa-check text-success"></i>
                             }
@@ -46,24 +46,24 @@
                             }
                         </td>
                         <td>
-                            @brand.Date.ToShortDateString()
+                            @variantGroup.Date.ToShortDateString()
                         </td>
                         <td>
-                            @brand.User.Name
+                            @variantGroup.User.Name
                         </td>
                         <td class="text-center">
-                            <a asp-action="MoveUp" asp-route-id="@brand.Id" class="text-secondary mr-2">
+                            <a asp-action="MoveUp" asp-route-id="@variantGroup.Id" class="text-secondary mr-2">
                                 <i class="fa fa-caret-up"></i>
                             </a>
-                            <a asp-action="MoveDn" asp-route-id="@brand.Id" class="text-secondary mr-2">
+                            <a asp-action="MoveDn" asp-route-id="@variantGroup.Id" class="text-secondary mr-2">
                                 <i class="fa fa-caret-down"></i>
                             </a>
                         </td>
                         <td class="text-center">
-                            <a asp-action="Edit" asp-route-id="@brand.Id" class="text-secondary mr-2">
+                            <a asp-action="Edit" asp-route-id="@variantGroup.Id" class="text-secondary mr-2">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a asp-action="Remove" asp-route-id="@brand.Id" data-name="@brand.Name" class="text-secondary remove-btn">
+                            <a asp-action="Remove" asp-route-id="@variantGroup.Id" data-name="@variantGroup.Name" class="text-secondary remove-btn">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
@@ -78,7 +78,9 @@
     <partial name="_DataTablesPartial" />
     <script>
             $(() => {
-                $('#dataTable').DataTable();
+                $('#dataTable').DataTable({
+                    "order": [[4, "asc"]]
+                });
 
                 $('.remove-btn').on('click', function () {
                     const name = $(this).attr('data-name');

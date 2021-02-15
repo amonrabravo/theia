@@ -77,7 +77,6 @@ namespace Theia
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext context, RoleManager<Role> roleManager, UserManager<User> userManager)
         {
-            context.Database.Migrate();
 
             if (env.IsDevelopment())
             {
@@ -123,6 +122,8 @@ namespace Theia
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            context.Database.EnsureCreated();
+
             new[]
             {
                 new Role { DiplayName = "Yöneticiler" , Name = "Administrators" },
@@ -139,6 +140,7 @@ namespace Theia
             var user = new User { Name = Configuration.GetValue<string>("Security:DefaultAdmin:Name"), UserName = Configuration.GetValue<string>("Security:DefaultAdmin:UserName"), Email = Configuration.GetValue<string>("Security:DefaultAdmin:UserName") };
             userManager.CreateAsync(user, Configuration.GetValue<string>("Security:DefaultAdmin:Password")).Wait();
             userManager.AddToRolesAsync(user, new[] { "Administrators", "ProductAdministrators", "FinanceAdministrators", "Members" }).Wait();
+
         }
     }
 }
