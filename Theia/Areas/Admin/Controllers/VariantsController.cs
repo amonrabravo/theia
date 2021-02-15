@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +32,12 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await context.Variants.OrderBy(p => p.SortOrder).ToListAsync());
+            return View(await context.Variants.OrderBy(p => p.VariantGroupId).ThenBy(p => p.SortOrder).ToListAsync());
         }
 
         public async Task<IActionResult> Create()
         {
-            ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name"); 
+            ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
             return View(new Variant { Enabled = true });
         }
 
@@ -43,6 +46,27 @@ namespace Theia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.PictureFile != null)
+                {
+                    try
+                    {
+
+                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                        {
+                            image.Mutate(p => p.Resize(new ResizeOptions
+                            {
+                                Size = new Size(32, 32)
+                            }));
+                            model.Picture = image.ToBase64String(PngFormat.Instance);
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+                        ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
+                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        return View(model);
+                    }
+                }
                 var nextOrder = ((await context.Variants.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
@@ -67,6 +91,27 @@ namespace Theia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.PictureFile != null)
+                {
+                    try
+                    {
+
+                        using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
+                        {
+                            image.Mutate(p => p.Resize(new ResizeOptions
+                            {
+                                Size = new Size(32, 32)
+                            }));
+                            model.Picture = image.ToBase64String(PngFormat.Instance);
+                        }
+                    }
+                    catch (UnknownImageFormatException)
+                    {
+                        ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
+                        TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        return View(model);
+                    }
+                }
                 context.Entry(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
@@ -94,7 +139,7 @@ namespace Theia.Areas.Admin.Controllers
         public async Task<IActionResult> MoveUp(int id)
         {
             var subject = await context.Variants.FindAsync(id);
-            var target = await context.Variants.Where(p => p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            var target = await context.Variants.Where(p => p.VariantGroupId == subject.VariantGroupId && p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
@@ -110,7 +155,7 @@ namespace Theia.Areas.Admin.Controllers
         public async Task<IActionResult> MoveDn(int id)
         {
             var subject = await context.Variants.FindAsync(id);
-            var target = await context.Variants.Where(p => p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
+            var target = await context.Variants.Where(p => p.VariantGroupId == subject.VariantGroupId && p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
