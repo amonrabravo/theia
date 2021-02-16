@@ -1,6 +1,6 @@
 ﻿@model Category
 <div class="form-row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
         <div class="form-group">
             <ul class="breadcrumb p-0 bg-transparent">
                 @foreach (var categoryParent in Model.GetPathItems())
@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
         <div class="form-group">
             <label asp-for="Name"></label>
             <input type="text" asp-for="Name" class="form-control" />
@@ -26,7 +26,7 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
         <div class="form-group">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled">
