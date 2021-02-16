@@ -13,24 +13,26 @@
     </div>
     <div class="card-body">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <partial name="CreateOrUpdate" model="Model" />
-            <div class="form-row">
-                <div class="col-12 col-md-6">
-                    <img id="PictureFilePreview" src="~/content/images/no-image-320-240.jpg" alt="@Model.Name" width="320" height="240" class="d-block border p-2 shadow-sm mb-2" />
-                    <div class="form-group">
-                        <label asp-for="PictureFile"></label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" asp-for="PictureFile">
-                            <label class="custom-file-label" for="PictureFile" data-browse="Gözat">dosya seçiniz...</label>
-                        </div>
-                    </div>
-                    <div class="alert alert-light">
-                        <i class="fa fa-exclamation-triangle"></i>
-                        <ul class="list-unstyled">
-                            <li>En iyi görünüm için 320&times;240 piksel görsel dosyaları yükleyiniz.</li>
-                            <li>Yüklenen dosyalar otomatik olarak 320&times;240 piksel ebadına getirilecektir..</li>
-                        </ul>
-                    </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab">Genel</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="descriptions-tab" data-toggle="tab" href="#descriptions" role="tab">Açıklamalar</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab">Fotoğraf</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active border border-top-0 p-2" id="general" role="tabpanel">
+                    <partial name="CreateOrUpdateGeneral" model="Model" />
+                </div>
+                <div class="tab-pane fade border border-top-0 p-2" id="descriptions" role="tabpanel">
+                    <partial name="CreateOrUpdateDescriptions" model="Model" />
+                </div>
+                <div class="tab-pane fade border border-top-0 p-2" id="picture" role="tabpanel">
+                    <partial name="CreateOrUpdatePicture" model="Model" />
                 </div>
             </div>
             <hr />
@@ -39,11 +41,24 @@
         </form>
     </div>
 </div>
-
+@section head {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+}
 @section scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script>
         $(() => {
+
+            $('#BrandId').select2({
+                'theme': 'bootstrap4'
+            });
+
+            $('textarea').summernote({
+                'height': '400px'
+            });
 
             $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
 

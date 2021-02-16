@@ -9,7 +9,7 @@ namespace TheiaData.Data
 {
     public class Product : BaseEntity
     {
-        [Display(Name = "Marka Adı")]
+        [Display(Name = "Ürün Adı")]
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Name { get; set; }
         [Display(Name = "Ürün Kodu")]
@@ -17,14 +17,19 @@ namespace TheiaData.Data
         public decimal Price { get; set; }
         public string Picture { get; set; }
         [Display(Name = "Açıklamalar")]
-        [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Descriptions { get; set; }
+        [Display(Name = "Görüntülenme")]
         public int Reviews { get; set; } = 0;
         [Display(Name = "Marka")]
         public int? BrandId { get; set; }
         [NotMapped]
         [Display(Name = "Görsel")]
         public IFormFile PictureFile { get; set; }
+        [NotMapped]
+        [Display(Name = "Fiyat")]
+        [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
+        [RegularExpression(@"^([0-9]+(\,[0-9]{1,2})?)$", ErrorMessage = "Lütfen geçerli bir fiyat yazınız")]
+        public string PriceText { get; set; }
         public virtual Brand Brand { get; set; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new HashSet<ProductVariant>();
@@ -53,7 +58,7 @@ namespace TheiaData.Data
 
                 entity
                     .Property(p => p.Price)
-                    .HasPrecision(18,4);
+                    .HasPrecision(18, 4);
 
                 entity
                     .Property(p => p.Picture)

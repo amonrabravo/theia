@@ -6,8 +6,10 @@
     <title>@ViewData["Title"]</title>
     <link href="~/css/admin/admin.min.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    @await RenderSectionAsync("Head", false)
 </head>
 <body class="h-100">
+    
     <div class="h-100 d-flex">
         <div>
             <div class="side-nav">

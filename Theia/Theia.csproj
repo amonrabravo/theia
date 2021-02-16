@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\Admin\Utils\" />
     <Folder Include="Lib\bootstrap\dist\js\" />
     <Folder Include="Services\" />
     <Folder Include="wwwroot\content\images\admin\" />

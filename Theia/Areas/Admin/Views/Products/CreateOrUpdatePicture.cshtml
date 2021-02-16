@@ -1,0 +1,20 @@
+﻿@model Product
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <img id="PictureFilePreview" src="@(Model.Picture == null ? "/content/images/no-image-800-800.jpg" : Model.Picture)" alt="@Model.Name" width="400" height="400" class="d-block border p-2 shadow-sm mb-2" />
+        <div class="form-group">
+            <label asp-for="PictureFile"></label>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" asp-for="PictureFile">
+                <label class="custom-file-label" for="PictureFile" data-browse="Gözat">dosya seçiniz...</label>
+            </div>
+        </div>
+        <div class="alert alert-light">
+            <i class="fa fa-exclamation-triangle"></i>
+            <ul class="list-unstyled">
+                <li>En iyi görünüm için 800&times;800 piksel görsel dosyaları yükleyiniz.</li>
+                <li>Yüklenen dosyalar otomatik olarak 800&times;800 piksel ebadına getirilecektir..</li>
+            </ul>
+        </div>
+    </div>
+</div>

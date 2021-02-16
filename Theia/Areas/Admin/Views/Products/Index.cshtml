@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Product
+@{
     var entityName = "Ürün";
     ViewData["Title"] = $"{entityName} Tanımları";
 }
@@ -16,21 +17,128 @@
         </div>
     </div>
     <div class="card-body">
-        <table id="dataTable" class="table table-striped table-bordered"></table>
+        <table id="dataTable" class="table table-striped table-bordered" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(_ => _.Picture)</th>
+                    <th>@Html.DisplayNameFor(_ => _.ProductCode)</th>
+                    <th>@Html.DisplayNameFor(_ => _.Name)</th>
+                    <th>@Html.DisplayNameFor(_ => _.Brand.Name)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(_ => _.Enabled)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(_ => _.Reviews)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(_ => _.Date)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(_ => _.User.Name)</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
 
 @section scripts{
     <partial name="_DataTablesPartial" />
     <script>
-            $(() => {
-                $('#dataTable').DataTable();
+        $(() => {
+            $.fn.dataTable.ext.errMode = 'throw';
+            var dataTable = $('#dataTable').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'filter': true,
+                'orderMulti': false,
+                'pageLength': 10,
+                'order' : [1],
+                'ajax': {
+                    'url': '@(Url.Action("GetList"))',
+                    'type': 'POST',
+                    'datatype': 'json'
+                },
 
+                'columnDefs': [
+                    {
+                        'targets': [0,8,9],
+                        'visible': true,
+                        'searchable': false,
+                        'orderable': false
+                    }
+                    ],
+                'columns': [
+                    {
+                        'data': 'picture',
+                        'name': '@(Html.DisplayNameFor(_=>_.Picture))',
+                        'render': function (data, type, row) {
+                            return `<img src="`+ (row.picture ?? '/content/images/no-image-800-800.jpg')+`" width="80" height="80" class="p-2 border"/>`;
+                        },
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'productCode',
+                        'name': '@(Html.DisplayNameFor(_=>_.ProductCode))',
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'name',
+                        'name': '@(Html.DisplayNameFor(_=>_.Name))',
+                        'autoWidth': true,
+                    },
+                    {
+                        'data': 'brandName',
+                        'name': '@(Html.DisplayNameFor(_=>_.Brand.Name))',
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'enabled',
+                        'name': '@(Html.DisplayNameFor(_=>_.Enabled))',
+                        'render': function (data, type, row) {
+                            return row.enabled ? `<i class="fa fa-check text-success"></i>` : `<i class="fa fa-times text-danger"></i>`;
+                        },
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'reviews',
+                        'name': '@(Html.DisplayNameFor(_=>_.Reviews))',
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'date',
+                        'name': '@(Html.DisplayNameFor(_=>_.Date))',
+                        'autoWidth': true
+                    },
+                    {
+                        'data': 'userName',
+                        'name': '@(Html.DisplayNameFor(_=>_.User.Name))',
+                        'autoWidth': true
+                    },
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return `<a href="Products/Edit/`+row.id+`" class="text-secondary mr-2">
+                                        <i class="fa fa-edit"></i>
+                                    </a>`;
+                        },
+                        'autoWidth': true
+                    },
+                    {
+                        'data': null,
+                        'render': function (data, type, row) {
+                            return `<a href="Products/Remove/`+row.id+`" data-name="`+row.name+`" class="text-secondary remove-btn">
+                                        <i class="fa fa-trash"></i>
+                                     </a>`;
+                        },
+                        'autoWidth': true
+                    },
+                ],
+
+
+            });
+
+            dataTable.on('draw', () => {
+                console.log(345345)
                 $('.remove-btn').on('click', function () {
                     const name = $(this).attr('data-name');
                     const href = $(this).attr('href');
                     removeConfirm.fire({
-                        text: name + ' isimli @entityName.ToLower() TAMAMEN silinecektir. Silme işlemine devam etmek istiyormusunuz?'
+                        text: name + ' isimli @Html.Encode(entityName.ToLower()) TAMAMEN silinecektir. Silme işlemine devam etmek istiyormusunuz?'
                     })
                         .then(result => {
                             if (result.value) {
@@ -40,5 +148,6 @@
                     return false;
                 });
             });
+         });
     </script>
 }

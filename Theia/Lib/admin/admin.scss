@@ -4,6 +4,22 @@ $enable-rounded: false;
 $primary: #b0007c;
 @import "../bootstrap/scss/bootstrap.scss";
 
+/* select2 */
+@import "./select2/select2-bootstrap4.scss";
+
+.select2-selection__choice__remove {
+    @extend .btn;
+    @extend .btn-sm;
+    float: unset !important;
+    padding-bottom: 4px;
+}
+
+.select2-selection__choice {
+    border: none !important;
+}
+/* /select2 */
+
+
 .side-nav {
     @extend .bg-dark;
     @extend .text-light;
@@ -45,4 +61,48 @@ $primary: #b0007c;
 .alert.alert-danger {
     background-color: $danger;
     color: $white;
+}
+
+.arrow-div {
+    position: relative;
+    background: #f12742;
+}
+
+.arrow-div:after {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(241, 39, 66, 0);
+    border-bottom-color: #f12742;
+    border-width: 10px;
+    margin-left: -10px;
+}
+
+.field-validation-error {
+    color: $white;
+    background-color: $danger;
+    padding: .15rem;
+    position: relative;
+    display: inline-block;
+    bottom: 2px;
+    font-size: .6rem;
+}
+.field-validation-error:after {
+    bottom: 100%;
+    left: 10%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: $danger;
+    border-width: 5px;
+    margin-left: -5px;
 }

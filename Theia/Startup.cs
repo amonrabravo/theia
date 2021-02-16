@@ -122,7 +122,7 @@ namespace Theia
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
             new[]
             {

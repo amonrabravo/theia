@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using TheiaData;
 using TheiaData.Data;
+using Theia.Areas.Admin.Utils.DataTables;
+using System.Collections.Generic;
+using Theia.Areas.Admin.Models;
 
 namespace Theia.Areas.Admin.Controllers
 {
@@ -32,8 +38,52 @@ namespace Theia.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        [HttpPost("GetList")]
+        public async Task<IActionResult> GetList(Parameters parameters)
         {
+            int filteredCount = 0;
+            int count = 0;
+
+            var products =
+                await context
+                .Products
+                .AsNoTracking()
+                .Include(p => p.Brand)
+                .Include(p => p.User)
+                .Where(p => (parameters.Search.Value == null || (p.Name != null && p.Name.ToLower().Contains(parameters.Search.Value.ToLower()))))
+                .Select(p => new ProductListModel { 
+                    Id = p.Id,
+                    Name = p.Name, 
+                    Picture = p.Picture,
+                    Date = p.Date.ToShortDateString(),
+                    Enabled = p.Enabled, 
+                    Price = p.Price.ToString("c2"),
+                    ProductCode = p.ProductCode,
+                    UserName = p.User.Name, 
+                    BrandName = p.Brand.Name, 
+                    UserId = p.UserId, 
+                    BrandId = p.BrandId,
+                    Reviews = p.Reviews.ToString("n0")
+                })
+                .ToListAsync();
+
+            filteredCount = products.Skip(parameters.Start).Count();
+
+            count = context.Products.Count();
+
+            Result<ProductListModel> result = new Result<ProductListModel>
+            {
+                draw = parameters.Draw,
+                data = products,
+                recordsFiltered = filteredCount,
+                recordsTotal = count
+            };
+            return Json(result);
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
             return View(new Product { Enabled = true });
         }
 
@@ -50,7 +100,7 @@ namespace Theia.Areas.Admin.Controllers
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(800, 600)
+                                Size = new Size(800, 800)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }
@@ -63,6 +113,7 @@ namespace Theia.Areas.Admin.Controllers
                 }
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
+                model.Price = decimal.Parse(model.PriceText, CultureInfo.CreateSpecificCulture("tr-TR"));
 
                 context.Entry(model).State = EntityState.Added;
                 await context.SaveChangesAsync();
@@ -74,7 +125,10 @@ namespace Theia.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            return View(await context.Products.FindAsync(id));
+            var model = await context.Products.FindAsync(id);
+            model.PriceText = model.Price.ToString("#.00");
+            ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+            return View(model);
         }
 
         [HttpPost]
@@ -90,7 +144,7 @@ namespace Theia.Areas.Admin.Controllers
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(800, 600)
+                                Size = new Size(800, 800)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }
