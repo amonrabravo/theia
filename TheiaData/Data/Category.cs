@@ -46,6 +46,7 @@ namespace TheiaData.Data
         public IEnumerable<Category> GetPathItems()
         {
             var itemList = new List<Category>();
+            itemList.Add(this);
             getParentItems(this, ref itemList);
             itemList.Reverse();
             return itemList;

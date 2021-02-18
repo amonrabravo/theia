@@ -1,6 +1,6 @@
 ﻿namespace Theia.Areas.Admin.Utils.DataTables
 {
-    public enum DTOrderDir
+    public enum OrderDir
     {
         ASC,
         DESC
@@ -10,7 +10,7 @@
     {
         public int Column { get; set; }
 
-        public DTOrderDir Dir { get; set; }
+        public OrderDir Dir { get; set; }
     }
 
 }

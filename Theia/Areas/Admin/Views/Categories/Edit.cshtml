@@ -67,7 +67,7 @@
             </a>
         </div>
     </div>
-    <div class="card-body collapse show" id="editFormSubItems"> 
+    <div class="card-body collapse show" id="editFormSubItems">
         <table id="dataTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -81,24 +81,33 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model.Children.OrderBy(p=>p.SortOrder))
+                @foreach (var category in Model.Children.OrderBy(p => p.SortOrder))
                 {
                     <tr>
                         <td>
-                            <img id="PictureFilePreview" src="@(category.Picture!=null ? category.Picture : "/content/images/no-image-320-240.jpg")" alt="@category.Name" height="64" class="border shadow-sm mb-2" />
+                            <img id="PictureFilePreview" src="@(category.Picture != null ? category.Picture : "/content/images/no-image-320-240.jpg")" alt="@category.Name" height="64" class="border shadow-sm mb-2" />
                         </td>
                         <td>
 
                             <ul class="breadcrumb p-0 bg-transparent">
-                                @foreach (var categoryParent in category.GetPathItems())
-                                {
-                                    <li class="breadcrumb-item">
-                                        <a asp-action="Edit" asp-route-id="@categoryParent.Id">@categoryParent.Name</a>
-                                    </li>
+                                @{
+                                    var pathNames = category.GetPathItems().ToList();
+                                    foreach (var categoryParent in pathNames)
+                                    {
+                                        if (pathNames.LastOrDefault() == categoryParent)
+                                        {
+                                            <li class="breadcrumb-item active">
+                                                @categoryParent.Name
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="breadcrumb-item">
+                                                <a asp-action="Edit" asp-route-id="@categoryParent.Id">@categoryParent.Name</a>
+                                            </li>
+                                        }
+                                    }
                                 }
-                                <li class="breadcrumb-item active">
-                                    @category.Name
-                                </li>
                             </ul>
                         </td>
                         <td>

@@ -1,49 +1,58 @@
 ﻿@model Product
-    <div class="form-row">
-        <div class="col-12 col-md-6">
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input type="text" asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name"></span>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="ProductCode"></label>
+            <input type="text" asp-for="ProductCode" class="form-control" />
+            <span asp-validation-for="ProductCode"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="SelectedCategoryIds"></label>
+            <select asp-for="SelectedCategoryIds" asp-items="@ViewData["Categories"] as SelectList" class="custom-select" multiple>
+            </select>
+            <span asp-validation-for="SelectedCategoryIds"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-3">
+        <div class="form-group">
+            <label asp-for="BrandId"></label>
+            <select asp-for="BrandId" asp-items="@ViewData["Brands"] as SelectList" class="custom-select">
+            </select>
+            <span asp-validation-for="BrandId"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-2">
+        <div class="form-group">
+            <label asp-for="PriceText"></label>
+            <input type="text" asp-for="PriceText" class="form-control text-right" />
+            <span asp-validation-for="PriceText"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled">
+                <label class="custom-control-label" for="customCheckEnabled">Yayınla</label>
             </div>
         </div>
     </div>
-    <div class="form-row">
-        <div class="col-12 col-md-6">
-            <div class="form-group">
-                <label asp-for="ProductCode"></label>
-                <input type="text" asp-for="ProductCode" class="form-control" />
-                <span asp-validation-for="ProductCode"></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-12 col-md-3">
-            <div class="form-group">
-                <label asp-for="BrandId"></label>
-                <select asp-for="BrandId" asp-items="@ViewData["Brands"] as SelectList" class="custom-select">
-                    <option selected disabled value="">[Seçiniz]</option>
-                </select>
-                <span asp-validation-for="BrandId"></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-12 col-md-2">
-            <div class="form-group">
-                <label asp-for="PriceText"></label>
-                <input type="text" asp-for="PriceText" class="form-control text-right" />
-                <span asp-validation-for="PriceText"></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="col-12 col-md-6">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled">
-                    <label class="custom-control-label" for="customCheckEnabled">Yayınla</label>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>

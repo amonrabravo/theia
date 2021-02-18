@@ -30,6 +30,9 @@ namespace TheiaData.Data
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         [RegularExpression(@"^([0-9]+(\,[0-9]{1,2})?)$", ErrorMessage = "Lütfen geçerli bir fiyat yazınız")]
         public string PriceText { get; set; }
+        [NotMapped]
+        [Display(Name = "Kategoriler")]
+        public IEnumerable<int> SelectedCategoryIds { get; set; } 
         public virtual Brand Brand { get; set; }
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new HashSet<ProductVariant>();

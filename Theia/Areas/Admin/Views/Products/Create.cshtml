@@ -18,6 +18,9 @@
                     <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab">Genel</a>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab">Kategoriler</a>
+                </li>
+                <li class="nav-item" role="presentation">
                     <a class="nav-link" id="descriptions-tab" data-toggle="tab" href="#descriptions" role="tab">Açıklamalar</a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -27,6 +30,9 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active border border-top-0 p-2" id="general" role="tabpanel">
                     <partial name="CreateOrUpdateGeneral" model="Model" />
+                </div>
+                <div class="tab-pane fade border border-top-0 p-2" id="categories" role="tabpanel">
+                    <partial name="CreateOrUpdateCategories" model="Model" />
                 </div>
                 <div class="tab-pane fade border border-top-0 p-2" id="descriptions" role="tabpanel">
                     <partial name="CreateOrUpdateDescriptions" model="Model" />
@@ -53,10 +59,14 @@
         $(() => {
 
             $('#BrandId').select2({
-                'theme': 'bootstrap4'
+                'theme': 'bootstrap4',
             });
 
-            $('textarea').summernote({
+            $('#SelectedCategoryIds').select2({
+                'theme': 'bootstrap4',
+            });
+
+            $('#Descriptions').summernote({
                 'height': '400px'
             });
 

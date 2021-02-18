@@ -3,15 +3,24 @@
     <div class="col-12 col-md-6">
         <div class="form-group">
             <ul class="breadcrumb p-0 bg-transparent">
-                @foreach (var categoryParent in Model.GetPathItems())
-                {
-                    <li class="breadcrumb-item">
-                        <a asp-action="Edit" asp-route-id="@categoryParent.Id">@categoryParent.Name</a>
-                    </li>
+                @{
+                    var categoryParents = Model.GetPathItems();
+                    foreach (var categoryParent in categoryParents)
+                    {
+                        if (categoryParents.LastOrDefault() == categoryParent)
+                        {
+                            <li class="breadcrumb-item active">
+                                @categoryParent.Name
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item">
+                                <a asp-action="Edit" asp-route-id="@categoryParent.Id">@categoryParent.Name</a>
+                            </li>
+                        }
+                    }
                 }
-                <li class="breadcrumb-item active">
-                    @Model.Name
-                </li>
             </ul>
         </div>
     </div>

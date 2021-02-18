@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
@@ -15,6 +14,7 @@ using TheiaData.Data;
 using Theia.Areas.Admin.Utils.DataTables;
 using System.Collections.Generic;
 using Theia.Areas.Admin.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Theia.Areas.Admin.Controllers
 {
@@ -44,24 +44,56 @@ namespace Theia.Areas.Admin.Controllers
             int filteredCount = 0;
             int count = 0;
 
-            var products =
-                await context
+            var query = context
                 .Products
                 .AsNoTracking()
                 .Include(p => p.Brand)
                 .Include(p => p.User)
-                .Where(p => (parameters.Search.Value == null || (p.Name != null && p.Name.ToLower().Contains(parameters.Search.Value.ToLower()))))
-                .Select(p => new ProductListModel { 
+                .Where(p =>
+                    (parameters.Search.Value == null || (p.Name != null && p.Name.ToLower().Contains(parameters.Search.Value.ToLower()))) ||
+                    (parameters.Search.Value == null || (p.ProductCode != null && p.ProductCode.ToLower().Contains(parameters.Search.Value.ToLower())))
+                );
+            switch (parameters.Columns[parameters.Order[0].Column].Data)
+            {
+                case "productCode":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.ProductCode) : query.OrderByDescending(p => p.ProductCode);
+                    break;
+                case "price":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Price) : query.OrderByDescending(p => p.Price);
+                    break;
+                case "date":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Date) : query.OrderByDescending(p => p.Date);
+                    break;
+                case "enbled":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Enabled) : query.OrderByDescending(p => p.Enabled);
+                    break;
+                case "userName":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.User.Name) : query.OrderByDescending(p => p.User.Name);
+                    break;
+                case "brandName":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Brand.Name) : query.OrderByDescending(p => p.Brand.Name);
+                    break;
+                case "reviews":
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Reviews) : query.OrderByDescending(p => p.Reviews);
+                    break;
+                case "name":
+                default:
+                    query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
+                    break;
+            }
+            var products = await query
+                .Select(p => new ProductListModel
+                {
                     Id = p.Id,
-                    Name = p.Name, 
+                    Name = p.Name,
                     Picture = p.Picture,
                     Date = p.Date.ToShortDateString(),
-                    Enabled = p.Enabled, 
+                    Enabled = p.Enabled,
                     Price = p.Price.ToString("c2"),
                     ProductCode = p.ProductCode,
-                    UserName = p.User.Name, 
-                    BrandName = p.Brand.Name, 
-                    UserId = p.UserId, 
+                    UserName = p.User.Name,
+                    BrandName = p.Brand.Name,
+                    UserId = p.UserId,
                     BrandId = p.BrandId,
                     Reviews = p.Reviews.ToString("n0")
                 })
@@ -83,8 +115,11 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create()
         {
+            var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
+            var model = new Product { Enabled = true };
+            ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
             ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
-            return View(new Product { Enabled = true });
+            return View(model);
         }
 
         [HttpPost]
@@ -121,7 +156,12 @@ namespace Theia.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             else
+            {
+                var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
+                ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
+                ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
                 return View(model);
+            }
         }
         public async Task<IActionResult> Edit(int? id)
         {
@@ -155,13 +195,19 @@ namespace Theia.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
+                model.Price = decimal.Parse(model.PriceText, CultureInfo.CreateSpecificCulture("tr-TR"));
                 context.Entry(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
                 return RedirectToAction("Index");
             }
             else
+            {
+                var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
+                ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
+                ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
                 return View(model);
+            }
         }
         public async Task<IActionResult> Remove(int id)
         {
