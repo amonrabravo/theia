@@ -18,24 +18,36 @@
             <input type="hidden" asp-for="Picture" />
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab">Genel</a>
+                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab"><i class="fa fa-tag"></i> Genel</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="descriptions-tab" data-toggle="tab" href="#descriptions" role="tab">Açıklamalar</a>
+                    <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab"><i class="fa fa-cubes"></i> Kategoriler</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab">Fotoğraf</a>
+                    <a class="nav-link" id="descriptions-tab" data-toggle="tab" href="#descriptions" role="tab"><i class="fa fa-file-text"></i> Açıklamalar</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab"><i class="fa fa-image"></i> Fotoğraf</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="pictureGallery-tab" data-toggle="tab" href="#pictureGallery" role="tab"><i class="fa fa-images"></i> Fotoğraf Galerisi</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active border border-top-0 p-2" id="general" role="tabpanel">
                     <partial name="CreateOrUpdateGeneral" model="Model" />
                 </div>
+                <div class="tab-pane fade border border-top-0 p-2" id="categories" role="tabpanel">
+                    <partial name="CreateOrUpdateCategories" model="Model" />
+                </div>
                 <div class="tab-pane fade border border-top-0 p-2" id="descriptions" role="tabpanel">
                     <partial name="CreateOrUpdateDescriptions" model="Model" />
                 </div>
                 <div class="tab-pane fade border border-top-0 p-2" id="picture" role="tabpanel">
                     <partial name="CreateOrUpdatePicture" model="Model" />
+                </div>
+                <div class="tab-pane fade border border-top-0 p-2" id="pictureGallery" role="tabpanel">
+                    <partial name="CreateOrUpdatePictureGallery" model="Model" />
                 </div>
             </div>
             <hr />
@@ -71,6 +83,26 @@
                     $('#PictureFilePreview').attr('src', fileReader.result);
                 };
                 fileReader.readAsDataURL(e.target.files[0]);
+            });
+
+            $('#PictureFiles').change(function (e) {
+                $('#PictureFilePreviews').html('');
+                for (var i = 0; i < e.target.files.length; i++) {
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (evt) {
+                        $('#PictureFilePreviews').append(`
+                         <div class="p-2">
+                            <div class="card shadow-sm">
+                                <img src="`+ evt.target.result + `" class="img-card-top" />
+                                <div class="card-body text-center">
+                                
+                                </div>
+                            </div>
+                        </div>
+                        `);
+                    };
+                    fileReader.readAsDataURL(e.target.files[i]);
+                }
             });
         });
     </script>

@@ -1,0 +1,55 @@
+﻿@model Product
+
+@if (Model.ProductPictures.Count > 0)
+{
+
+    <div class="card card-default">
+        <div class="card-header">
+            Mevcut Fotoğraflar
+        </div>
+        <div class="card-body">
+            <div class="form-row row-cols-6 mb-2">
+                @foreach (var productPicture in Model.ProductPictures)
+                {
+                    <div class="p-2">
+                        <div class="card">
+                            <img src="@productPicture.Picture" class="img-card-top" />
+                            <div class="card-body text-center">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="PicturesToDeleted" id="PicturesToDeleted_@productPicture.Id" value="@productPicture.Id" />
+                                    <label class="custom-control-label" for="PicturesToDeleted_@productPicture.Id">Sil</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+}
+<div class="card card-default">
+    <div class="card-header">
+        Eklenecek Fotoğraflar
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="PictureFiles"></label>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" asp-for="PictureFiles" multiple>
+                <label class="custom-file-label" for="PictureFiles" data-browse="Gözat">dosya(lar) seçiniz...</label>
+            </div>
+        </div>
+        <div class="alert alert-light">
+            <i class="fa fa-exclamation-triangle"></i>
+            <ul class="list-unstyled">
+                <li>Kontrol(Ctrl) tuşu ile bir ya da daha fazla görsel seçebilirsiniz.</li>
+                <li>En iyi görünüm için 800&times;800 piksel görsel dosyaları yükleyiniz.</li>
+                <li>Yüklenen dosyalar otomatik olarak 800&times;800 piksel ebadına getirilecektir..</li>
+            </ul>
+        </div>
+
+        <div id="PictureFilePreviews" class="form-row row-cols-6 mb-2">
+        </div>
+    </div>
+</div>

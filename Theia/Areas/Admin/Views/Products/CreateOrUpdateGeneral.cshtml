@@ -18,16 +18,6 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="col-12 col-md-6">
-        <div class="form-group">
-            <label asp-for="SelectedCategoryIds"></label>
-            <select asp-for="SelectedCategoryIds" asp-items="@ViewData["Categories"] as SelectList" class="custom-select" multiple>
-            </select>
-            <span asp-validation-for="SelectedCategoryIds"></span>
-        </div>
-    </div>
-</div>
-<div class="form-row">
     <div class="col-12 col-md-3">
         <div class="form-group">
             <label asp-for="BrandId"></label>

@@ -69,7 +69,7 @@
                         'data': 'picture',
                         'name': '@(Html.DisplayNameFor(_=>_.Picture))',
                         'render': function (data, type, row) {
-                            return `<img src="`+ (row.picture ?? '/content/images/no-image-800-800.jpg')+`" width="80" height="80" class="p-2 border"/>`;
+                            return `<img src="${row.picture ?? '/content/images/no-image-800-800.jpg'}" width="80" height="80" class="p-2 border"/>`;
                         },
                         'autoWidth': true
                     },
@@ -81,6 +81,9 @@
                     {
                         'data': 'name',
                         'name': '@(Html.DisplayNameFor(_=>_.Name))',
+                        'render': function (data, type, row) {
+                            return `<div class="h4">${row.name}</div><div class="small text-secondary">${row.categories}</div>`;
+                        },
                         'autoWidth': true,
                     },
                     {
@@ -121,9 +124,7 @@
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return `<a href="Products/Edit/`+row.id+`" class="text-secondary mr-2">
-                                        <i class="fa fa-edit"></i>
-                                    </a>`;
+                            return `<a href="Products/Edit/${row.id}" class="text-secondary mr-2"><i class="fa fa-edit"></i></a>`;
                         },
                         'autoWidth': true,
                         'className': 'text-center'
@@ -131,9 +132,7 @@
                     {
                         'data': null,
                         'render': function (data, type, row) {
-                            return `<a href="Products/Remove/`+row.id+`" data-name="`+row.name+`" class="text-secondary remove-btn">
-                                        <i class="fa fa-trash"></i>
-                                     </a>`;
+                            return `<a href="Products/Remove/${row.id}" data-name="${row.name}" class="text-secondary remove-btn"><i class="fa fa-trash"></i></a>`;
                         },
                         'autoWidth': true,
                         'className' : 'text-center'

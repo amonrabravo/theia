@@ -19,7 +19,7 @@ namespace Theia.Areas.Admin.Models
         public string Picture { get; set; }
         public bool Enabled { get; set; }
         public string Reviews { get; set; }
-
+        public string Categories { get; set; }
 
     }
 }

@@ -5467,7 +5467,7 @@ button.side-nav:focus {
 .mx-2 {
   margin-right: 0.5rem !important; }
 
-.mb-2,
+.mb-2, .card.card-default, .card.card-primary, .card.card-info, .card.card-success, .card.card-warning, .card.card-danger,
 .my-2 {
   margin-bottom: 0.5rem !important; }
 

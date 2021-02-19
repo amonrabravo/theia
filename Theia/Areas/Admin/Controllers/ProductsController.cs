@@ -95,7 +95,8 @@ namespace Theia.Areas.Admin.Controllers
                     BrandName = p.Brand.Name,
                     UserId = p.UserId,
                     BrandId = p.BrandId,
-                    Reviews = p.Reviews.ToString("n0")
+                    Reviews = p.Reviews.ToString("n0"),
+                    Categories = string.Join(", ", p.CategoryProducts.Select(p => p.Category.Name))
                 })
                 .ToListAsync();
 
@@ -115,10 +116,8 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
             var model = new Product { Enabled = true };
-            ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
-            ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+            await PopulateViewData();
             return View(model);
         }
 
@@ -146,28 +145,72 @@ namespace Theia.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
+                if (model.PictureFiles != null)
+                {
+                    foreach (var pictureFile in model.PictureFiles)
+                    {
+                        try
+                        {
+                            using (var image = await Image.LoadAsync(pictureFile.OpenReadStream()))
+                            {
+                                image.Mutate(p => p.Resize(new ResizeOptions
+                                {
+                                    Size = new Size(800, 800)
+                                }));
+                                var producPicture = new ProductPicture { Picture = image.ToBase64String(PngFormat.Instance), Date = DateTime.Now, Enabled = true, UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id };
+                                context.Entry(producPicture).State = EntityState.Added;
+                                model.ProductPictures.Add(producPicture);
+                            }
+                        }
+                        catch (UnknownImageFormatException)
+                        {
+                            TempData["error"] = "Yüklenen bir ya da daha fazla görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        }
+                    }
+
+                }
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
                 model.Price = decimal.Parse(model.PriceText, CultureInfo.CreateSpecificCulture("tr-TR"));
 
+                if (model.SelectedCategoryIds != null)
+                {
+                    foreach (var selectedCategoryId in model.SelectedCategoryIds)
+                    {
+                        var categoryProduct = new CategoryProduct { CategoryId = selectedCategoryId };
+                        context.Entry(categoryProduct).State = EntityState.Added;
+                        model.CategoryProducts.Add(categoryProduct);
+                    }
+                }
+
                 context.Entry(model).State = EntityState.Added;
-                await context.SaveChangesAsync();
-                TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
-                return RedirectToAction("Index");
+                try
+                {
+                    await context.SaveChangesAsync();
+                    TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["error"] = $"{model.Name} isimli başka bir ürün olduğu için ekleme işlemi tamamlanamıyor.";
+                    await PopulateViewData();
+                    return View(model);
+                }
             }
             else
             {
                 var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
-                ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
-                ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+                await PopulateViewData();
                 return View(model);
             }
         }
+
         public async Task<IActionResult> Edit(int? id)
         {
             var model = await context.Products.FindAsync(id);
             model.PriceText = model.Price.ToString("#.00");
-            ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+            model.SelectedCategoryIds = model.CategoryProducts.Select(p => p.CategoryId).ToList();
+            await PopulateViewData();
             return View(model);
         }
 
@@ -195,20 +238,71 @@ namespace Theia.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
+                var categoryProducts = context.CategoryProducts.Where(p => p.ProductId == model.Id).ToList();
+                if (model.SelectedCategoryIds != null)
+                {
+                    foreach (var selectedCategoryId in model.SelectedCategoryIds.Where(p => !categoryProducts.Any(q => q.CategoryId == p)))
+                    {
+                        var categoryProduct = new CategoryProduct { CategoryId = selectedCategoryId };
+                        context.Entry(categoryProduct).State = EntityState.Added;
+                        model.CategoryProducts.Add(categoryProduct);
+                    }
+                }
+                foreach (var categoryProduct in categoryProducts.Where(p => !model.SelectedCategoryIds.Any(q => q == p.CategoryId)))
+                    context.Entry(categoryProduct).State = EntityState.Deleted;
+
+                if (model.PictureFiles != null)
+                {
+                    foreach (var pictureFile in model.PictureFiles)
+                    {
+                        try
+                        {
+                            using (var image = await Image.LoadAsync(pictureFile.OpenReadStream()))
+                            {
+                                image.Mutate(p => p.Resize(new ResizeOptions
+                                {
+                                    Size = new Size(800, 800)
+                                }));
+                                var producPicture = new ProductPicture { Picture = image.ToBase64String(PngFormat.Instance), Date = DateTime.Now, Enabled = true, UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id };
+                                context.Entry(producPicture).State = EntityState.Added;
+                                model.ProductPictures.Add(producPicture);
+                            }
+                        }
+                        catch (UnknownImageFormatException)
+                        {
+                            TempData["error"] = "Yüklenen bir ya da daha fazla görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        }
+                    }
+
+                }
+
+                if (model.PicturesToDeleted != null)
+                    foreach (var pictureId in model.PicturesToDeleted)
+                        context.Entry(await context.ProductPictures.FindAsync(pictureId)).State = EntityState.Deleted;
+
                 model.Price = decimal.Parse(model.PriceText, CultureInfo.CreateSpecificCulture("tr-TR"));
                 context.Entry(model).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
-                return RedirectToAction("Index");
+                try
+                {
+                    await context.SaveChangesAsync();
+                    TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["error"] = $"{model.Name} isimli başka bir ürün olduğu için ekleme işlemi tamamlanamıyor.";
+                    await PopulateViewData();
+                    return View(model);
+                }
             }
             else
             {
                 var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
-                ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
-                ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+                await PopulateViewData();
                 return View(model);
             }
         }
+
         public async Task<IActionResult> Remove(int id)
         {
             var model = await context.Products.FindAsync(id);
@@ -225,5 +319,10 @@ namespace Theia.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        private async Task PopulateViewData()
+        {
+            ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
+            ViewData["Brands"] = new SelectList((await context.Brands.Select(p => new { p.Id, p.Name }).ToListAsync()), "Id", "Name");
+        }
     }
 }

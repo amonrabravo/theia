@@ -5,9 +5,11 @@
         {
             <div class="form-row">
                 <div class="col">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" name="SelectedCategoryIds" id="SelectedCategoryId_@category.Value" value="@category.Value">
-                        <label class="custom-control-label" for="SelectedCategoryId_@category.Value">@category.Text</label>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="SelectedCategoryIds" id="SelectedCategoryId_@category.Value" value="@category.Value" @(Model.SelectedCategoryIds.Any(p=> p.ToString() == category.Value)?"checked":"") />
+                            <label class="custom-control-label" for="SelectedCategoryId_@category.Value">@category.Text</label>
+                        </div>
                     </div>
                 </div>
             </div>

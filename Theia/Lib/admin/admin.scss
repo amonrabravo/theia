@@ -28,26 +28,32 @@ $primary: #0085a9;
 }
 
 .card.card-default {
+    @extend .mb-2;
     border-top: .15rem solid $secondary;
 }
 
 .card.card-primary {
+    @extend .mb-2;
     border-top: .15rem solid $primary;
 }
 
 .card.card-info {
+    @extend .mb-2;
     border-top: .15rem solid $info;
 }
 
 .card.card-success {
+    @extend .mb-2;
     border-top: .15rem solid $success;
 }
 
 .card.card-warning {
+    @extend .mb-2;
     border-top: .15rem solid $warning;
 }
 
 .card.card-danger {
+    @extend .mb-2;
     border-top: .15rem solid $danger;
 }
 
