@@ -183,6 +183,7 @@ namespace Theia.Areas.Admin.Controllers
                     }
                 }
 
+
                 context.Entry(model).State = EntityState.Added;
                 try
                 {
@@ -199,7 +200,6 @@ namespace Theia.Areas.Admin.Controllers
             }
             else
             {
-                var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
                 await PopulateViewData();
                 return View(model);
             }
@@ -238,6 +238,7 @@ namespace Theia.Areas.Admin.Controllers
                         return View(model);
                     }
                 }
+                
                 var categoryProducts = context.CategoryProducts.Where(p => p.ProductId == model.Id).ToList();
                 if (model.SelectedCategoryIds != null)
                 {
@@ -297,7 +298,6 @@ namespace Theia.Areas.Admin.Controllers
             }
             else
             {
-                var categories = (await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }).ToList();
                 await PopulateViewData();
                 return View(model);
             }

@@ -69,7 +69,7 @@
                         'data': 'picture',
                         'name': '@(Html.DisplayNameFor(_=>_.Picture))',
                         'render': function (data, type, row) {
-                            return `<img src="${row.picture ?? '/content/images/no-image-800-800.jpg'}" width="80" height="80" class="p-2 border"/>`;
+                            return `<img src="${row.picture ?? '/content/images/no-image-800-800.jpg'}" width="80" height="80" class="p-1 border bg-white"/>`;
                         },
                         'autoWidth': true
                     },
@@ -82,7 +82,7 @@
                         'data': 'name',
                         'name': '@(Html.DisplayNameFor(_=>_.Name))',
                         'render': function (data, type, row) {
-                            return `<div class="h4">${row.name}</div><div class="small text-secondary">${row.categories}</div>`;
+                            return `<div class="h4">${row.name}</div><div class="text-secondary">${row.categories}</div>`;
                         },
                         'autoWidth': true,
                     },

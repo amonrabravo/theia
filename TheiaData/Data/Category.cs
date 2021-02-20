@@ -14,15 +14,27 @@ namespace TheiaData.Data
         [Display(Name = "Kategori Adı")]
         [Required(ErrorMessage = "{0} alanı boş bırakılamaz!")]
         public string Name { get; set; }
+        
         public int? ParentId { get; set; }
+        
         public string Picture { get; set; }
+        
         [NotMapped]
         [Display(Name = "Görsel")]
         public IFormFile PictureFile { get; set; }
+        
         public virtual Category Parent { get; set; }
+        
         public virtual ICollection<Category> Children { get; set; } = new HashSet<Category>();
+        
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
+        
         public virtual ICollection<CategoryVariantGroup> CategoryVariantGroups { get; set; } = new HashSet<CategoryVariantGroup>();
+
+        [NotMapped]
+        [Display(Name = "Varyant Grupları")]
+        public IEnumerable<int> SelectedVariantGroupIds { get; set; } = new List<int>();
+
         public static string GetPath(AppDbContext context, int? id)
         {
             var nameList = new List<string>();

@@ -1,0 +1,18 @@
+﻿@model Category
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        @foreach (var variantGroup in ViewData["VariantGroups"] as SelectList)
+        {
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="SelectedVariantGroupIds" id="SelectedVariantGroupId_@variantGroup.Value" value="@variantGroup.Value" @(Model.SelectedVariantGroupIds.Any(p=> p.ToString() == variantGroup.Value)?"checked":"") />
+                            <label class="custom-control-label" for="SelectedVariantGroupId_@variantGroup.Value">@variantGroup.Text</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
