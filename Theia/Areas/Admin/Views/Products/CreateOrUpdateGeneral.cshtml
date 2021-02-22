@@ -22,6 +22,7 @@
         <div class="form-group">
             <label asp-for="BrandId"></label>
             <select asp-for="BrandId" asp-items="@ViewData["Brands"] as SelectList" class="custom-select">
+                <option value="" selected="selected">[Marka Yok]</option>
             </select>
             <span asp-validation-for="BrandId"></span>
         </div>

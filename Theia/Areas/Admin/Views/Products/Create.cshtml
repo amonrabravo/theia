@@ -92,12 +92,9 @@
                     var fileReader = new FileReader();
                     fileReader.onload = function (evt) {
                         $('#PictureFilePreviews').append(`
-                         <div class="p-2">
-                            <div class="card shadow-sm">
-                                <img src="`+ evt.target.result + `" class="img-card-top" />
-                                <div class="card-body text-center">
-                                
-                                </div>
+                         <div class="p-2 col">
+                            <div class="border">
+                                <img src="`+ evt.target.result + `" class="img-fluid" />
                             </div>
                         </div>
                         `);

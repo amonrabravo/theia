@@ -72,9 +72,9 @@ namespace Theia.Areas.Admin.Controllers
                 {
                     foreach (var selectedCategoryId in model.SelectedVariantGroupIds)
                     {
-                        var variantGroupProduct = new CategoryVariantGroup { CategoryId = selectedCategoryId };
-                        context.Entry(variantGroupProduct).State = EntityState.Added;
-                        model.CategoryVariantGroups.Add(variantGroupProduct);
+                        var categoryVariantGroup = new CategoryVariantGroup { VariantGroupId = selectedCategoryId };
+                        context.Entry(categoryVariantGroup).State = EntityState.Added;
+                        model.CategoryVariantGroups.Add(categoryVariantGroup);
                     }
                 }
                 var nextOrder = ((await context.Categories.Where(_ => _.ParentId == model.ParentId).OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
@@ -102,8 +102,11 @@ namespace Theia.Areas.Admin.Controllers
         
         public async Task<IActionResult> Edit(int? id)
         {
+            var model = await context.Categories.FindAsync(id);
             ViewBag.Path = Category.GetPath(context, id.Value);
-            return View(await context.Categories.FindAsync(id));
+            await PopulateViewData();
+            model.SelectedVariantGroupIds = model.CategoryVariantGroups.Select(p => p.VariantGroupId).ToList();
+            return View(model);
         }
 
         [HttpPost]
@@ -132,17 +135,17 @@ namespace Theia.Areas.Admin.Controllers
                     }
                 }
 
-                var variantGroupsProducts = context.CategoryProducts.Where(p => p.ProductId == model.Id).ToList();
+                var variantGroupsProducts = context.CategoryVariantGroups.Where(p => p.CategoryId == model.Id).ToList();
                 if (model.SelectedVariantGroupIds != null)
                 {
-                    foreach (var selectedVariantGroupId in model.SelectedVariantGroupIds.Where(p => !variantGroupsProducts.Any(q => q.CategoryId == p)))
+                    foreach (var selectedVariantGroupId in model.SelectedVariantGroupIds.Where(p => !variantGroupsProducts.Any(q => q.VariantGroupId == p)))
                     {
-                        var categoryProduct = new CategoryProduct { CategoryId = selectedVariantGroupId };
-                        context.Entry(categoryProduct).State = EntityState.Added;
-                        model.CategoryProducts.Add(categoryProduct);
+                        var categoryVariantGroup = new CategoryVariantGroup { VariantGroupId = selectedVariantGroupId };
+                        context.Entry(categoryVariantGroup).State = EntityState.Added;
+                        model.CategoryVariantGroups.Add(categoryVariantGroup);
                     }
                 }
-                foreach (var categoryVariantGroup in variantGroupsProducts.Where(p => !model.SelectedVariantGroupIds.Any(q => q == p.CategoryId)))
+                foreach (var categoryVariantGroup in variantGroupsProducts.Where(p => !model.SelectedVariantGroupIds.Any(q => q == p.VariantGroupId)))
                     context.Entry(categoryVariantGroup).State = EntityState.Deleted;
 
                 context.Entry(model).State = EntityState.Modified;

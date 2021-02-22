@@ -41,9 +41,6 @@ namespace Theia.Areas.Admin.Controllers
         [HttpPost("GetList")]
         public async Task<IActionResult> GetList(Parameters parameters)
         {
-            int filteredCount = 0;
-            int count = 0;
-
             var query = context
                 .Products
                 .AsNoTracking()
@@ -81,8 +78,8 @@ namespace Theia.Areas.Admin.Controllers
                     query = parameters.Order[0].Dir == OrderDir.ASC ? query.OrderBy(p => p.Name) : query.OrderByDescending(p => p.Name);
                     break;
             }
-            var products = await query
-                .Select(p => new ProductListModel
+            
+            var products = query.Select(p => new ProductListModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -97,19 +94,14 @@ namespace Theia.Areas.Admin.Controllers
                     BrandId = p.BrandId,
                     Reviews = p.Reviews.ToString("n0"),
                     Categories = string.Join(", ", p.CategoryProducts.Select(p => p.Category.Name))
-                })
-                .ToListAsync();
-
-            filteredCount = products.Skip(parameters.Start).Count();
-
-            count = context.Products.Count();
-
+                });
+                
             Result<ProductListModel> result = new Result<ProductListModel>
             {
                 draw = parameters.Draw,
-                data = products,
-                recordsFiltered = filteredCount,
-                recordsTotal = count
+                data = await products.Skip(parameters.Start).Take(parameters.Length).ToListAsync(),
+                recordsFiltered = query.Count(),
+                recordsTotal = context.Products.Count()
             };
             return Json(result);
         }

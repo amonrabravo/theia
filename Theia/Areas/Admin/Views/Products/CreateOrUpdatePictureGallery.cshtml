@@ -11,7 +11,7 @@
             <div class="form-row row-cols-6 mb-2">
                 @foreach (var productPicture in Model.ProductPictures)
                 {
-                    <div class="p-2">
+                    <div class="col p-2">
                         <div class="card">
                             <img src="@productPicture.Picture" class="img-card-top" />
                             <div class="card-body text-center">
@@ -48,8 +48,9 @@
                 <li>Yüklenen dosyalar otomatik olarak 800&times;800 piksel ebadına getirilecektir..</li>
             </ul>
         </div>
-
-        <div id="PictureFilePreviews" class="form-row row-cols-6 mb-2">
+        <div class="container-fluid">
+            <div id="PictureFilePreviews" class="row row-cols-6">
+            </div>
         </div>
     </div>
 </div>
