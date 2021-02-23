@@ -1,0 +1,63 @@
+﻿@model Banner
+@{
+    var entityName = "Tanıtım Görseli";
+    ViewData["Title"] = $"{entityName} Ekleme";
+}
+
+<div class="card card-primary">
+    <div class="card-header d-flex">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Ekleme Formu
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <partial name="CreateOrUpdate" model="Model" />
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/i18n/datepicker.tr-TR.min.js" integrity="sha512-IRYtUoQYA1v2rF1s4DwzweF3or4jM9rmI+hc0JWIeqp5TZyFH1Sg1yvABr1ow1ZNwc4kWR1gwJk0Xnk3tWYpOg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script>
+        $(() => {
+            $.datepicker.regional['tr'] = {
+                closeText: 'kapat',
+                prevText: '&#x3C;geri',
+                nextText: 'ileri&#x3e',
+                currentText: 'bugün',
+                monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+                monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                dayNames: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
+                dayNamesShort: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
+                dayNamesMin: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct'],
+                weekHeader: 'Hf',
+                dateFormat: 'dd.mm.yy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['tr']);
+
+            $('#DateStart').datepicker();
+            $('#DateEnd').datepicker();
+
+
+            $('#PictureFilePreview').click(function () { $('#PictureFile').click() });
+
+            $('#PictureFile').change(function (e) {
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    $('#PictureFilePreview').attr('src', fileReader.result);
+                };
+                fileReader.readAsDataURL(e.target.files[0]);
+            });
+        });
+    </script>
+}

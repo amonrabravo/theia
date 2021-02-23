@@ -32,12 +32,14 @@ namespace TheiaData
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<CategoryProduct> CategoryProducts { get; set; }
+        public virtual DbSet<CategoryBanner> CategoryBanners { get; set; }
         public virtual DbSet<VariantGroup> VariantGroups { get; set; }
         public virtual DbSet<Variant> Variants { get; set; }
         public virtual DbSet<CategoryVariantGroup> CategoryVariantGroups { get; set; }
         public virtual DbSet<ProductVariant> ProductVariants { get; set; }
         public virtual DbSet<ProductPicture> ProductPictures { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Banner> Banners { get; set; }
 
 
 

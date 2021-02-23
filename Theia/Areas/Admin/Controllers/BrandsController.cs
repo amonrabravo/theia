@@ -19,6 +19,7 @@ namespace Theia.Areas.Admin.Controllers
     public class BrandsController : Controller
     {
         private readonly AppDbContext context;
+
         private readonly UserManager<User> userManager;
 
         private readonly string entityName = "Marka";
@@ -70,13 +71,22 @@ namespace Theia.Areas.Admin.Controllers
                 model.SortOrder = nextOrder;
 
                 context.Entry(model).State = EntityState.Added;
-                await context.SaveChangesAsync();
-                TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
-                return RedirectToAction("Index");
+                try
+                {
+                    await context.SaveChangesAsync();
+                    TempData["success"] = $"{entityName} ekleme işlemi başarıyla tamamlanmıştır.";
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
+                    return View(model);
+                };
             }
             else
                 return View(model);
         }
+
         public async Task<IActionResult> Edit(int? id)
         {
             return View(await context.Brands.FindAsync(id));
@@ -107,13 +117,22 @@ namespace Theia.Areas.Admin.Controllers
                     }
                 }
                 context.Entry(model).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
-                return RedirectToAction("Index");
+                try
+                {
+                    await context.SaveChangesAsync();
+                    TempData["success"] = $"{entityName} güncelleme işlemi başarıyla tamamlanmıştır.";
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateException)
+                {
+                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
+                    return View(model);
+                }
             }
             else
                 return View(model);
         }
+
         public async Task<IActionResult> Remove(int id)
         {
             var model = await context.Brands.FindAsync(id);
@@ -146,6 +165,7 @@ namespace Theia.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+        
         public async Task<IActionResult> MoveDn(int id)
         {
             var subject = await context.Brands.FindAsync(id);

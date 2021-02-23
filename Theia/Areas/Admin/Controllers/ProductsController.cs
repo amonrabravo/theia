@@ -185,7 +185,7 @@ namespace Theia.Areas.Admin.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["error"] = $"{model.Name} isimli başka bir ürün olduğu için ekleme işlemi tamamlanamıyor.";
+                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
                     await PopulateViewData();
                     return View(model);
                 }
@@ -283,7 +283,7 @@ namespace Theia.Areas.Admin.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["error"] = $"{model.Name} isimli başka bir ürün olduğu için ekleme işlemi tamamlanamıyor.";
+                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
                     await PopulateViewData();
                     return View(model);
                 }

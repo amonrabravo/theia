@@ -1,20 +1,20 @@
 ﻿@model Brand
-<div class="form-row">
-    <div class="col-12 col-md-6">
-        <div class="form-group">
-            <label asp-for="Name"></label>
-            <input type="text" asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name"></span>
-        </div>
+<ul class="nav nav-tabs" id="brandTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab"><i class="fa fa-tag"></i> Genel</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="picture-tab" data-toggle="tab" href="#picture" role="tab"><i class="fa fa-image"></i> Fotoğraf</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active border border-top-0 p-2" id="general" role="tabpanel">
+        <partial name="CreateOrUpdateGeneral" model="Model" />
+    </div>
+    <div class="tab-pane fade border border-top-0 p-2" id="picture" role="tabpanel">
+        <partial name="CreateOrUpdatePicture" model="Model" />
     </div>
 </div>
-<div class="form-row">
-    <div class="col-12 col-md-6">
-        <div class="form-group">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled">
-                <label class="custom-control-label" for="customCheckEnabled">Yayınla</label>
-            </div>
-        </div>
-    </div>
-</div>
+<hr />
+<a asp-action="Index" class="mr-2">İptal</a>
+<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kaydet</button>

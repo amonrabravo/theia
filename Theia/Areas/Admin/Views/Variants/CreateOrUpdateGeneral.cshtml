@@ -1,0 +1,38 @@
+﻿@model Variant
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="VariantGroupId"></label>
+            <select asp-for="VariantGroupId" asp-items="@(ViewData["VariantGroups"] as SelectList)" class="custom-select"></select>
+            <span asp-validation-for="VariantGroupId"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <label asp-for="ViewMode"></label>
+            <select asp-for="ViewMode" asp-items="Html.GetEnumSelectList<TheiaData.Data.VariantViewMode>()" class="custom-select"></select>
+            <span asp-validation-for="ViewMode"></span>
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-12 col-md-6">
+        <div class="form-group">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheckEnabled" asp-for="Enabled">
+                <label class="custom-control-label" for="customCheckEnabled">Yayınla</label>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,15 +17,15 @@ namespace Theia.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = "ProductAdministrators")]
-    public class VariantsController : Controller
+    public class BannersController : Controller
     {
         private readonly AppDbContext context;
 
         private readonly UserManager<User> userManager;
 
-        private readonly string entityName = "Marka";
+        private readonly string entityName = "Tanıtım Görseli";
 
-        public VariantsController(AppDbContext context, UserManager<User> userManager)
+        public BannersController(AppDbContext context, UserManager<User> userManager)
         {
             this.context = context;
             this.userManager = userManager;
@@ -33,17 +33,17 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await context.Variants.OrderBy(p => p.VariantGroupId).ThenBy(p => p.SortOrder).ToListAsync());
+            return View(await context.Banners.OrderBy(p => p.SortOrder).ToListAsync());
         }
 
         public async Task<IActionResult> Create()
         {
-            ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
-            return View(new Variant { Enabled = true });
+            await PopulateViewData();
+            return View(new Banner { Enabled = true });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Variant model)
+        public async Task<IActionResult> Create(Banner model)
         {
             if (ModelState.IsValid)
             {
@@ -51,27 +51,43 @@ namespace Theia.Areas.Admin.Controllers
                 {
                     try
                     {
-
                         using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(32, 32)
+                                Size = new Size(960, 360)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }
                     }
                     catch (UnknownImageFormatException)
                     {
-                        ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
                         TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
                         return View(model);
                     }
                 }
-                var nextOrder = ((await context.Variants.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
+                else
+                {
+                    TempData["error"] = $"Lütfen bir {entityName.ToLower()} yükleyiniz.";
+                    await PopulateViewData();
+                    return View(model);
+                }
+                var nextOrder = ((await context.Banners.OrderByDescending(_ => _.SortOrder).FirstOrDefaultAsync())?.SortOrder ?? 0) + 1;
                 model.UserId = (await userManager.FindByNameAsync(User.Identity.Name)).Id;
                 model.Date = DateTime.Now;
                 model.SortOrder = nextOrder;
+
+
+                if (model.SelectedCategoryIds != null)
+                {
+                    foreach (var selectedCategoryId in model.SelectedCategoryIds)
+                    {
+                        var categoryProduct = new CategoryBanner { CategoryId = selectedCategoryId };
+                        context.Entry(categoryProduct).State = EntityState.Added;
+                        model.CategoryBanners.Add(categoryProduct);
+                    }
+                }
+
 
                 context.Entry(model).State = EntityState.Added;
                 try
@@ -82,9 +98,9 @@ namespace Theia.Areas.Admin.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
+                    await PopulateViewData();
                     return View(model);
-                }
+                };
             }
             else
                 return View(model);
@@ -92,12 +108,14 @@ namespace Theia.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
-            return View(await context.Variants.FindAsync(id));
+            var model = await context.Banners.FindAsync(id);
+            await PopulateViewData();
+            model.SelectedCategoryIds = model.CategoryBanners.Select(p => p.CategoryId).ToList();
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Variant model)
+        public async Task<IActionResult> Edit(Banner model)
         {
             if (ModelState.IsValid)
             {
@@ -105,23 +123,36 @@ namespace Theia.Areas.Admin.Controllers
                 {
                     try
                     {
-
                         using (var image = await Image.LoadAsync(model.PictureFile.OpenReadStream()))
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(32, 32)
+                                Size = new Size(960, 360)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }
                     }
                     catch (UnknownImageFormatException)
                     {
-                        ViewData["VariantGroups"] = new SelectList(await context.VariantGroups.OrderBy(p => p.Name).ToListAsync(), "Id", "Name");
                         TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
                         return View(model);
                     }
                 }
+
+                var categoryBanners = context.CategoryBanners.Where(p => p.BannerId == model.Id).ToList();
+                if (model.SelectedCategoryIds != null)
+                {
+                    foreach (var selectedCategoryId in model.SelectedCategoryIds.Where(p => !categoryBanners.Any(q => q.CategoryId == p)))
+                    {
+                        var categoryBanner = new CategoryBanner { CategoryId = selectedCategoryId };
+                        context.Entry(categoryBanner).State = EntityState.Added;
+                        model.CategoryBanners.Add(categoryBanner);
+                    }
+                }
+                foreach (var categoryBanner in categoryBanners.Where(p => !model.SelectedCategoryIds.Any(q => q == p.CategoryId)))
+                    context.Entry(categoryBanner).State = EntityState.Deleted;
+
+
                 context.Entry(model).State = EntityState.Modified;
                 try
                 {
@@ -131,17 +162,20 @@ namespace Theia.Areas.Admin.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["error"] = $"{model.Name} isimli başka bir {entityName.ToLower()} olduğu için ekleme işlemi tamamlanamıyor.";
+                    await PopulateViewData();
                     return View(model);
                 }
             }
             else
+            {
+                await PopulateViewData();
                 return View(model);
+            }
         }
 
         public async Task<IActionResult> Remove(int id)
         {
-            var model = await context.Variants.FindAsync(id);
+            var model = await context.Banners.FindAsync(id);
             context.Entry(model).State = EntityState.Deleted;
             try
             {
@@ -150,15 +184,32 @@ namespace Theia.Areas.Admin.Controllers
             }
             catch (DbUpdateException)
             {
-                TempData["error"] = $"{model.Name} ile ilişkili bir ya da daha fazla kayıt olduğu için silme işlemi tamamlanamıyor.";
+
             }
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> MoveUp(int id)
         {
-            var subject = await context.Variants.FindAsync(id);
-            var target = await context.Variants.Where(p => p.VariantGroupId == subject.VariantGroupId && p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            var subject = await context.Banners.FindAsync(id);
+            var target = await context.Banners.Where(p => p.SortOrder < subject.SortOrder).OrderBy(p => p.SortOrder).LastOrDefaultAsync();
+            if (target != null)
+            {
+                var m = target.SortOrder;
+                target.SortOrder = subject.SortOrder;
+                subject.SortOrder = m;
+                context.Entry(subject).State = EntityState.Modified;
+                context.Entry(target).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
+            }
+            return RedirectToAction("Index");
+        }
+        
+        public async Task<IActionResult> MoveDn(int id)
+        {
+            var subject = await context.Banners.FindAsync(id);
+            var target = await context.Banners.Where(p => p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
             if (target != null)
             {
                 var m = target.SortOrder;
@@ -172,21 +223,10 @@ namespace Theia.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> MoveDn(int id)
+        private async Task PopulateViewData()
         {
-            var subject = await context.Variants.FindAsync(id);
-            var target = await context.Variants.Where(p => p.VariantGroupId == subject.VariantGroupId && p.SortOrder > subject.SortOrder).OrderBy(p => p.SortOrder).FirstOrDefaultAsync();
-            if (target != null)
-            {
-                var m = target.SortOrder;
-                target.SortOrder = subject.SortOrder;
-                subject.SortOrder = m;
-                context.Entry(subject).State = EntityState.Modified;
-                context.Entry(target).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                TempData["success"] = "Sıralama işlemi başarıyla tamamlanmıştır";
-            }
-            return RedirectToAction("Index");
+            ViewData["Categories"] = new SelectList((await context.Categories.ToListAsync()).Select(p => new { p.Id, Name = string.Join(" / ", p.GetPathItems().Select(q => q.Name)) }), "Id", "Name");
         }
+
     }
 }

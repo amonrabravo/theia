@@ -29,6 +29,8 @@ namespace TheiaData.Data
         
         public virtual ICollection<CategoryProduct> CategoryProducts { get; set; } = new HashSet<CategoryProduct>();
         
+        public virtual ICollection<CategoryBanner> CategoryBanners { get; set; } = new HashSet<CategoryBanner>();
+        
         public virtual ICollection<CategoryVariantGroup> CategoryVariantGroups { get; set; } = new HashSet<CategoryVariantGroup>();
 
         [NotMapped]

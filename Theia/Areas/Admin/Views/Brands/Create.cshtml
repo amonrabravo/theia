@@ -14,28 +14,6 @@
     <div class="card-body">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <partial name="CreateOrUpdate" model="Model" />
-            <div class="form-row">
-                <div class="col-12 col-md-6">
-                    <img id="PictureFilePreview" src="~/content/images/no-image-320-240.jpg" alt="@Model.Name" width="320" height="240" class="d-block border p-2 shadow-sm mb-2" />
-                    <div class="form-group">
-                        <label asp-for="PictureFile"></label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" asp-for="PictureFile">
-                            <label class="custom-file-label" for="PictureFile" data-browse="Gözat">dosya seçiniz...</label>
-                        </div>
-                    </div>
-                    <div class="alert alert-light">
-                        <i class="fa fa-exclamation-triangle"></i>
-                        <ul class="list-unstyled">
-                            <li>En iyi görünüm için 320&times;240 piksel görsel dosyaları yükleyiniz.</li>
-                            <li>Yüklenen dosyalar otomatik olarak 320&times;240 piksel ebadına getirilecektir..</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <a asp-action="Index" class="mr-2">İptal</a>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Kaydet</button>
         </form>
     </div>
 </div>
