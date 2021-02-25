@@ -118,6 +118,12 @@ namespace Theia
                     pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
+                    name: "category",
+                    pattern: "c/{id}/{name}.html",
+                    defaults: new { controller = "Home", action = "Category" }
+                    );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });

@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Product>
+<div class="row row-cols-4">
+    @foreach (var item in Model)
+    {
+        <partial name="ProductBox" model="item" />
+    }
+</div>

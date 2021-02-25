@@ -1,39 +1,14 @@
 ﻿
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
 $enable-rounded: false;
 $enable-gradient: true;
-$font-size-base: .8rem;
-$primary : #9ab701;
+$font-size-base: .85rem;
+$primary: #768d02;
+$secondary: #8a8e78;
 
 @import "../bootstrap/scss/bootstrap.scss";
 
-
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
-
 body {
     font-family: 'Open Sans', sans-serif;
-}
-
-.field-validation-error {
-    font-size: .7rem;
-    color: $danger;
-}
-
-.validation-summary-errors ul {
-    @extend .list-unstyled;
-    @extend .m-0;
-}
-
-/*.validation-summary-errors ul li {
-    &::before {
-        @extend .pr-2;
-        font-family: "Font Awesome 5 Free";
-        content: "\f071";
-    }
-}*/
-
-.alert-danger {
-    background-color: $danger;
-    color: $white;
 }

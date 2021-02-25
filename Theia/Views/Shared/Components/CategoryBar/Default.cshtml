@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Category>
+<nav class="navbar navbar-expand-lg navbar-light bg-light p-1">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#categoriesNavBar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="categoriesNavBar">
+        <ul class="navbar-nav mr-auto ml-auto">
+            @foreach (var item in Model)
+            {
+                if (item.Children.Count > 0)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown_@item.Id" role="button" data-toggle="dropdown">
+                            @item.Name
+                        </a>
+                        <div class="dropdown-menu">
+                            @foreach (var item1 in item.Children.Where(p=>p.Enabled).OrderBy(p=>p.SortOrder))
+                            {
+                                <a class="dropdown-item" asp-route="category" asp-route-id="@item1.Id" asp-route-name="@item1.Name.ToSafeUrlString()">@item1.Name</a>
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-route="category" asp-route-id="@item.Id" asp-route-name="@item.Name.ToSafeUrlString()">@item.Name</a>
+                    </li>
+                }
+            }
+
+        </ul>
+    </div>
+</nav>

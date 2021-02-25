@@ -1,15 +1,88 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link href="~/css/site/site.min.css" rel="stylesheet" />
 </head>
-<body>
-    <a asp-action="Index" asp-controller="Dashboard" asp-area="Admin">Admin</a>
-    @RenderBody()
+<body class="h-100">
+    <div class="d-flex flex-column h-100">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm small p-1">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavBar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="topNavBar">
+                    @await Component.InvokeAsync("AccountMenu") 
+                </div>
+            </div>
+        </nav>
+        <div class="bg-light flex-fill">
+            <div class="bg-white border-left border-right shadow-sm container h-100">
+                <div class="row border-bottom">
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="h4 text-secondary text-center">
+                            <i class="fa fa-shopping-bag"></i>
+                            TheiaShop
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <form asp-controller="Home" asp-action="Search" method="get">
+                            <div class="form-row justify-content-center">
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Kategori
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="#">Action</a>
+                                                        <a class="dropdown-item" href="#">Another action</a>
+                                                        <a class="dropdown-item" href="#">Something else here</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="search" name="keywords" class="form-control border-secondary" placeholder="ürün ara..." />
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-outline-secondary">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 col-md-3 p-2 text-right">
+                        <a asp-controller="Account" asp-action="CheckOut" class="btn btn-outline-secondary">
+                            <i class="fa fa-shopping-cart"></i> Sepetiniz <span class="badge badge-secondary">0</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 px-0">
+                        @await Component.InvokeAsync("CategoryBar")
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 p-0">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+
+    </script>
 </body>
 </html>

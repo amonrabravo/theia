@@ -40,6 +40,7 @@ namespace TheiaData
         public virtual DbSet<ProductPicture> ProductPictures { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Banner> Banners { get; set; }
+        public virtual DbSet<ContentPage> ContentPages { get; set; }
 
 
 

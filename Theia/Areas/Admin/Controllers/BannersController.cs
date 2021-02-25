@@ -55,7 +55,7 @@ namespace Theia.Areas.Admin.Controllers
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(960, 360)
+                                Size = new Size(1140, 360)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }
@@ -127,7 +127,7 @@ namespace Theia.Areas.Admin.Controllers
                         {
                             image.Mutate(p => p.Resize(new ResizeOptions
                             {
-                                Size = new Size(960, 360)
+                                Size = new Size(1140, 360)
                             }));
                             model.Picture = image.ToBase64String(PngFormat.Instance);
                         }

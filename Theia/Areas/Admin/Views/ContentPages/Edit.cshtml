@@ -1,0 +1,37 @@
+﻿@model ContentPage
+@section head {
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+}
+@{
+    var entityName = "İçerik Sayfası";
+    ViewData["Title"] = $"{entityName} Güncelleme";
+}
+
+<div class="card card-primary mb-2">
+    <div class="card-header d-flex" data-toggle="collapse" data-target="#editFormCardBody">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Güncelleme Formu
+        </div>
+    </div>
+    <div class="card-body collapse show" id="editFormCardBody">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="Date" />
+            <input type="hidden" asp-for="SortOrder" />
+            <partial name="CreateOrUpdate" model="Model" />
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(() => {
+            $('#Text').summernote({
+                'height': '600px'
+            });
+        })
+    </script>
+}

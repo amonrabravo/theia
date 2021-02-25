@@ -1,4 +1,7 @@
 ﻿@model Banner
+@section head {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+}
 @{
     var entityName = "Tanıtım Görseli";
     ViewData["Title"] = $"{entityName} Güncelleme";
@@ -26,8 +29,6 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/i18n/datepicker.tr-TR.min.js" integrity="sha512-IRYtUoQYA1v2rF1s4DwzweF3or4jM9rmI+hc0JWIeqp5TZyFH1Sg1yvABr1ow1ZNwc4kWR1gwJk0Xnk3tWYpOg==" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     <script>
         $(() => {
             $.datepicker.regional['tr'] = {

@@ -1,0 +1,14 @@
+﻿@model Product
+<div class="p-2">
+    <div class="card shadow-sm">
+        <img class="card-img-top" src="@Model.Picture" alt="@Model.Name" />
+        <div class="card-body">
+            <div class="card-title">
+                @Model.Name
+            </div>
+            <div class="card-text text-secondary h4">
+                @Model.Price.ToString("c2")
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+﻿@model ContentPage
+@section head {
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+}
+@{
+    var entityName = "İçerik Sayfası";
+    ViewData["Title"] = $"{entityName} Ekleme";
+}
+
+<div class="card card-primary">
+    <div class="card-header d-flex">
+        <div class="flex-fill">
+            <i class="fa fa-list"></i>
+            @entityName Ekleme Formu
+        </div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <partial name="CreateOrUpdate" model="Model" />
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <script>
+        $(() => {
+            $('#Text').summernote({
+                'height': '600px'
+            });
+        })
+    </script>
+}
