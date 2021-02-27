@@ -12,3 +12,11 @@ $secondary: #8a8e78;
 body {
     font-family: 'Open Sans', sans-serif;
 }
+
+.product-box-hover {
+    transition: .3s all ease;
+}
+
+.product-box-hover:hover {
+    filter: grayscale(80%);
+}

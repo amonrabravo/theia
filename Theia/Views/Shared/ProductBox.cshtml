@@ -1,13 +1,32 @@
 ﻿@model Product
-<div class="p-2">
+<div class="col p-2">
     <div class="card shadow-sm">
-        <img class="card-img-top" src="@Model.Picture" alt="@Model.Name" />
+        <a asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()">
+            <img class="card-img-top product-box-hover" src="@Model.Picture" alt="@Model.Name" />
+        </a>
         <div class="card-body">
-            <div class="card-title">
+            <div class="card-title text-truncate">
                 @Model.Name
             </div>
             <div class="card-text text-secondary h4">
                 @Model.Price.ToString("c2")
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <div class="px-1">
+                <a asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()" data-toggle="tooltip" title="İncele">
+                    <i class="fa fa-fw fa-search"></i>
+                </a>
+            </div>
+            <div class="px-1">
+                <a asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()" data-toggle="tooltip" title="Favorilerime ekle">
+                    <i class="fa fa-fw fa-heart"></i>
+                </a>
+            </div>
+            <div class="px-1">
+                <a asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()" data-toggle="tooltip" title="Sepete ekle">
+                    <i class="fa fa-fw fa-shopping-cart"></i>
+                </a>
             </div>
         </div>
     </div>

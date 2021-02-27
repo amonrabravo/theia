@@ -1,4 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Hoş geldiniz";
 }
-@await Component.InvokeAsync("Carousel") 
+@await Component.InvokeAsync("Carousel")
+<partial name="ProductList" model="ViewBag.FeaturedProducts" />

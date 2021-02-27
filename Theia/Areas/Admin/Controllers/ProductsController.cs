@@ -134,6 +134,7 @@ namespace Theia.Areas.Admin.Controllers
                     catch (UnknownImageFormatException)
                     {
                         TempData["error"] = "Yüklenen görsel dosyası, işlenebilir bir görsel biçimi değil. Lütfen, PNG, JPEG, BMP, TIF biçimli görsel dosyaları yükleyiniz...";
+                        await PopulateViewData();
                         return View(model);
                     }
                 }

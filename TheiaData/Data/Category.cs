@@ -37,26 +37,8 @@ namespace TheiaData.Data
         [Display(Name = "Varyant Grupları")]
         public IEnumerable<int> SelectedVariantGroupIds { get; set; } = new List<int>();
 
-        public static string GetPath(AppDbContext context, int? id)
-        {
-            var nameList = new List<string>();
-            if (id == null)
-            {
-                nameList.Add("Kategoriler");
-                return string.Join(" / ", nameList);
-            }
-            getParentNames(context, id.Value, ref nameList);
-            nameList.Reverse();
-            nameList.Insert(0, "Kategoriler");
-            return string.Join(" / ", nameList);
-        }
-        private static void getParentNames(AppDbContext context, int? id, ref List<string> nameList)
-        {
-            var category = context.Categories.Include(p => p.Parent).Single(p => p.Id == id);
-            nameList.Add(category.Name);
-            if (category.Parent != null)
-                getParentNames(context, category.ParentId.Value, ref nameList);
-        }
+        public string PathName => string.Join(" / ", GetPathItems().Select(p => p.Name));
+        
         public IEnumerable<Category> GetPathItems()
         {
             var itemList = new List<Category>();
@@ -73,6 +55,7 @@ namespace TheiaData.Data
                 getParentItems(item.Parent, ref itemList);
             }
         }
+
         public override void Build(ModelBuilder builder)
         {
             builder.Entity<Category>(entity =>

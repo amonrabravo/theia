@@ -38,7 +38,7 @@ namespace Theia.Areas.Admin.Controllers
         public async Task<IActionResult> Create(int? parentId = null)
         {
             await PopulateViewData();
-            ViewBag.Path = Category.GetPath(context, parentId);
+            ViewBag.Path = (await context.Categories.FindAsync(parentId)).PathName;
             return View(new Category { Enabled = true, ParentId = parentId });
         }
 
@@ -103,7 +103,7 @@ namespace Theia.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             var model = await context.Categories.FindAsync(id);
-            ViewBag.Path = Category.GetPath(context, id.Value);
+            ViewBag.Path = model.PathName;
             await PopulateViewData();
             model.SelectedVariantGroupIds = model.CategoryVariantGroups.Select(p => p.VariantGroupId).ToList();
             return View(model);

@@ -35,17 +35,14 @@ namespace TheiaData.Data
 
         public virtual ICollection<CategoryBanner> CategoryBanners { get; set; } = new HashSet<CategoryBanner>();
 
-        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
-        
         public override void Build(ModelBuilder builder)
         {
-            builder.Entity<Brand>(entity =>
+            builder.Entity<Banner>(entity =>
             {
                 entity
                 .Property(p => p.Picture)
                 .IsRequired()
                 .IsUnicode(false);
-
             });
 
         }

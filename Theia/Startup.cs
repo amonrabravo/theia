@@ -124,6 +124,12 @@ namespace Theia
                     );
 
                 endpoints.MapControllerRoute(
+                    name: "product",
+                    pattern: "p/{id}/{name}.html",
+                    defaults: new { controller = "Home", action = "Product" }
+                    );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
@@ -146,7 +152,6 @@ namespace Theia
             var user = new User { Name = Configuration.GetValue<string>("Security:DefaultAdmin:Name"), UserName = Configuration.GetValue<string>("Security:DefaultAdmin:UserName"), Email = Configuration.GetValue<string>("Security:DefaultAdmin:UserName") };
             userManager.CreateAsync(user, Configuration.GetValue<string>("Security:DefaultAdmin:Password")).Wait();
             userManager.AddToRolesAsync(user, new[] { "Administrators", "ProductAdministrators", "FinanceAdministrators", "Members" }).Wait();
-
         }
     }
 }

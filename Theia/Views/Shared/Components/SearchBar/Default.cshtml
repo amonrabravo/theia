@@ -1,0 +1,44 @@
+﻿@model SearchViewModel
+<div class="col-12 col-md-3 p-2">
+    <div class="h4 text-secondary text-center">
+        <i class="fa fa-shopping-bag"></i>
+        TheiaShop
+    </div>
+</div>
+<div class="col-12 col-md-6 p-2">
+    <form id="SearchForm" asp-controller="Home" asp-action="Search" method="get">
+        <input type="hidden" asp-for="CategoryId" />
+        <div class="form-row justify-content-center">
+            <div class="col-12">
+                <div class="form-group mb-0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryDropdownMenuButton" data-toggle="dropdown">
+                                    Kategori
+                                </button>
+                                <div class="dropdown-menu">
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <a class="dropdown-item" href="#" data-id="@category.Id" data-name="@category.Name">@category.PathName</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <input type="search" asp-for="Keyword" class="form-control border-secondary" placeholder="ürün ara..." />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="col-12 col-md-3 p-2 text-right">
+    <a asp-controller="Account" asp-action="CheckOut" class="btn btn-outline-secondary">
+        <i class="fa fa-shopping-cart"></i> Sepetiniz <span class="badge badge-secondary">0</span>
+    </a>
+</div>
