@@ -357,7 +357,7 @@ mark,
   padding: 0.2em;
   background-color: #fcf8e3; }
 
-.list-unstyled {
+.list-unstyled, .alert ul {
   padding-left: 0;
   list-style: none; }
 
@@ -7023,3 +7023,11 @@ body {
 
 .product-box-hover:hover {
   filter: grayscale(80%); }
+
+.alert-danger {
+  background-color: #dc3545;
+  color: #fff; }
+
+.alert-success {
+  background-color: #28a745;
+  color: #fff; }

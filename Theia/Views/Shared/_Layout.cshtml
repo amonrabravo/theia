@@ -8,7 +8,7 @@
     <link href="~/css/site/site.min.css" rel="stylesheet" />
 </head>
 <body class="h-100">
-    <div class="d-flex flex-column h-100">
+    <div class="d-flex flex-column h-100 wrapper">
         <partial name="TopNavBar" />
         <div class="bg-light flex-fill">
             <div class="bg-white border-left border-right shadow-sm container h-100">
@@ -32,7 +32,7 @@
     <script>
         $(() => {
             $('[data-toggle="tooltip"]').tooltip({
-                container: 'body'
+                container: '.wrapper'
             });
             
             $('#SearchForm #categoryDropdownMenuButton').html($('#SearchForm a[data-id="@(ViewContext.HttpContext.Request.Query["CategoryId"])"]').attr('data-name'));

@@ -38,7 +38,7 @@ namespace Theia.Areas.Admin.Controllers
         public async Task<IActionResult> Create(int? parentId = null)
         {
             await PopulateViewData();
-            ViewBag.Path = (await context.Categories.FindAsync(parentId)).PathName;
+            ViewBag.Path = (await context.Categories.FindAsync(parentId))?.PathName;
             return View(new Category { Enabled = true, ParentId = parentId });
         }
 

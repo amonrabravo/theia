@@ -27,8 +27,7 @@ namespace Theia
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
+            
             services.AddDbContext<AppDbContext>(options =>
             {
                 switch (Configuration.GetValue<string>("Application:DatabaseProvider"))
@@ -72,6 +71,8 @@ namespace Theia
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
+            services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

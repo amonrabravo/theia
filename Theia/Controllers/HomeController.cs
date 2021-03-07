@@ -23,28 +23,31 @@ namespace Theia.Controllers
             this.context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewBag.FeaturedProducts = await context.Products.Where(p => p.Enabled).OrderBy(p => Guid.NewGuid()).Take(12).ToListAsync();
+            ViewBag.FeaturedProducts = context.Products.AsNoTracking().Where(p => p.Enabled).OrderBy(p => Guid.NewGuid()).Take(12);
             return View();
         }
+
         public IActionResult Search(SearchViewModel searchViewModel)
         {
-            var model = context
+            ViewBag.Results = context
                 .Products
-                .AsEnumerable()
-                .Where(p =>
-                    (p.CategoryProducts.Any(q => q.Category.GetPathItems().Any(r => r.Id == searchViewModel.CategoryId)) || searchViewModel.CategoryId == null)
-                    &&
-                    (
-                        searchViewModel.Keywords.Any(q => p.Name.ToLower().Contains(q))
-                        ||
-                        searchViewModel.Keywords.Any(q => p.Descriptions?.ToLower().Contains(q) ?? false)
-                        ||
-                        searchViewModel.Keywords.Any(q => p.ProductCode?.ToLower().Contains(q) ?? false)
-                    )
-                ).ToList();
-            return View(model);
+                .AsNoTracking()
+                //.Where(p =>
+                //    (p.CategoryProducts.Any(q => q.Category.GetPathItems().Any(r => r.Id == searchViewModel.CategoryId)) || searchViewModel.CategoryId == null)
+                //    &&
+                //    (
+                //        searchViewModel.Keywords.Any(q => EF.Functions.Contains("Name", q))
+                //        ||
+                //        searchViewModel.Keywords.Any(q => EF.Functions.Contains("Descriptions", q))
+                //        ||
+                //        searchViewModel.Keywords.Any(q => EF.Functions.Contains("ProductCode", q))
+
+                //    )
+                //)
+                .AsQueryable();
+            return View();
         }
 
 

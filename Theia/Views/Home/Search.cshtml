@@ -1,3 +1,1 @@
-﻿@model IEnumerable<Product>
-
-<partial name="ProductList" model="Model" />
+﻿@await Component.InvokeAsync("PagedProductList", ViewBag.Results)

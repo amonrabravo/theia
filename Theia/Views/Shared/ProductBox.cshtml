@@ -2,7 +2,7 @@
 <div class="col p-2">
     <div class="card shadow-sm">
         <a asp-route="Product" asp-route-id="@Model.Id" asp-route-name="@Model.Name.ToSafeUrlString()">
-            <img class="card-img-top product-box-hover" src="@Model.Picture" alt="@Model.Name" />
+            <img class="card-img-top product-box-hover" src="@(string.IsNullOrEmpty(Model.Picture) ? "/content/images/no-image-800-800.jpg" : Model.Picture)" alt="@Model.Name" />
         </a>
         <div class="card-body">
             <div class="card-title text-truncate">

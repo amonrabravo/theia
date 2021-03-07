@@ -20,3 +20,17 @@ body {
 .product-box-hover:hover {
     filter: grayscale(80%);
 }
+
+.alert ul {
+    @extend .list-unstyled;
+}
+
+.alert-danger {
+    background-color: $danger;
+    color: $white;
+}
+.alert-success {
+    background-color: $success;
+    color: $white;
+}
+

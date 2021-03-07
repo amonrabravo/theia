@@ -1,0 +1,41 @@
+﻿@model ProductListViewModel
+
+<div class="row row-cols-1 row-cols-md-4 mx-0">
+    @foreach (var item in Model.Products)
+    {
+        <partial name="ProductBox" model="item" />
+    }
+</div>
+@if (Model.Pages.Count > 1)
+{
+    <div class="col-12 p-2 d-flex justify-content-center">
+        <ul class="pagination pagination-sm">
+            <li class="page-item">
+                <a href="#" class="page-link pagination-first">
+                    <i class="fa fa-fw fa-fast-backward"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a href="#" class="page-link pagination-prev">
+                    <i class="fa fa-fw fa-step-backward"></i>
+                </a>
+            </li>
+            @foreach (var productListPage in Model.Pages)
+            {
+                <li class="page-item"><a class="page-link" href="@productListPage.Url">@productListPage.Text</a></li>
+            }
+            <li class="page-item">
+                <a href="#" class="page-link pagination-next">
+                    <i class="fa fa-fw fa-step-forward"></i>
+                </a>
+            </li>
+            <li class="page-item">
+                <a href="#" class="page-link pagination-last">
+                    <i class="fa fa-fw fa-fast-forward"></i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+}
+
