@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TheiaData.Data;
+﻿using System.Collections.Generic;
 
 namespace Theia.Models
 {
-    public class ProductListViewModel
+    public class ProductListRequestViewModel
     {
-        public IList<Product>  Products { get; set; }
-        public IList<ProductListPage> Pages { get; set; } = new List<ProductListPage>();
-        public int PageSize { get; set; } = 12;
-        public int TotalCount { get; set; }
-        public int AbsolutePage { get; set; } = 1;
-        public string OrderColumn { get; set; } = nameof(Product.Name);
-        public ProductListOrderDirection OrderDirection { get; set; } = ProductListOrderDirection.Asc;
-
+        public int Page { get; set; } = 1;
+        public int Count { get; set; } = 12;
+        public string FilterColumn { get; set; } = "Name";
+        public string OrderColumn { get; set; } = "Name";
+        public OrderDirection OrderDirection { get; set; } = OrderDirection.Asc;
+    }
+    public class ProductListResponseViewModel<T> where T : class
+    {
+        public int TotalRecords { get; set; } = 0;
+        public IEnumerable<T> Data { get; set; } = new List<T>();
     }
 
-    public class ProductListPage
-    {
-        public string Text { get; set; }
-        public string Url { get; set; }
-    }
-
-    public enum ProductListOrderDirection
+    public enum OrderDirection
     {
         Asc, Desc
     }

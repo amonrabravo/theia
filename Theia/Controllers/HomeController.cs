@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Theia.Models;
 using TheiaData;
+using TheiaData.Data;
 
 namespace Theia.Controllers
 {
@@ -23,13 +24,20 @@ namespace Theia.Controllers
             this.context = context;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ProductsList(ProductListRequestViewModel model)
+        {
+            var query = context.Products;
+            return Json(new ProductListResponseViewModel<Product> { TotalRecords = query.Count(), Data = await query.Skip((model.Page - 1) * model.Count).Take(model.Count).ToListAsync() });
+        }
+
         public IActionResult Index()
         {
             ViewBag.FeaturedProducts = context.Products.AsNoTracking().Where(p => p.Enabled).OrderBy(p => Guid.NewGuid()).Take(12);
             return View();
         }
 
-        public IActionResult Search(SearchViewModel searchViewModel)
+        public IActionResult Search(int? categoryId = null, string searchKeywords = null, int? page = 1)
         {
             ViewBag.Results = context
                 .Products
@@ -49,7 +57,6 @@ namespace Theia.Controllers
                 .AsQueryable();
             return View();
         }
-
 
 
         [Route("/Home/Error/{code:int}")]
